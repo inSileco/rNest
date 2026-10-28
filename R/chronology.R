@@ -323,7 +323,7 @@ chronology <- function(
   }
   #print("hello")
   #add probablement mettre ce passage dans la fonction stage_obs ferait plus de sens
-  # pour ajouter une journ\u0000d'incubation avant l'atteinte du prog si L,incubation d\u0000te avant le dernier oeuf
+  # pour ajouter une journ\u00e9e d'incubation avant l'atteinte du prog si L,incubation d\u00e9bute avant le dernier oeuf
   if (
     !layingdetect &&
       dat$start[1] < 999 &&
@@ -344,8 +344,8 @@ chronology <- function(
   }
 
   if (!layingdetect && !is.null(eggobs$period) && unknown) {
-    # 2011-10-04 v\u0000fier les unknown, eggobs vs incobs avec le r\u0000ltats du unknown***
-    w <- which(dat$eggs != 0 & dat$stage_code == "eggs") #ici c'\u0000it un dat$eggs>0 pr\u0000 mars 2012
+    # 2011-10-04 v\u00e9rifier les unknown, eggobs vs incobs avec le r\u00e9sultats du unknown***
+    w <- which(dat$eggs != 0 & dat$stage_code == "eggs") #ici c'\u00e9tait un dat$eggs>0 pr\u00e9 5 mars 2012
     if (any(w)) {
       date2 <- dat$date[w[1]]
       names(date2) <- names(eggobs$period)[1]
@@ -625,7 +625,7 @@ chronology <- function(
     rearmin <- length(rearobs$period)
     if (!is.null(rearobs$period)) {
       if (is.null(incobs$period)) {
-        #rajout de ce ifelse car si on ne reach pas l'incubation pendant le laying et que incobs est vide m\u0000 s'il y a laying d\u0000ct\u00e9
+        #rajout de ce ifelse car si on ne reach pas l'incubation pendant le laying et que incobs est vide m\u00eame s'il y a laying d\u00e9tect\u00e9
         inc <- 0
         temprear <- span(max(layobs$period) + 1, rearobs$period)
         if (temprear > rear) {
@@ -887,7 +887,7 @@ chronology <- function(
         rep("laying", lay),
         rep("incubation", inc),
         rep("young", rear)
-      ) # <a v\u0000fier si \u0000marche pour un cas d'egg inconnu et que la longueur de inc fit avec les obs (voir la s\u0000ration des deux cas dans le centering
+      ) # <a verifier si ca marche pour un cas d'egg inconnu et que la longueur de inc fit avec les obs (voir la separation des deux cas dans le centering
     }
     if (all(unique(names(lobs$period)) %in% c("young"))) {
       ranobs <- range(lobs$period[names(lobs$period) == "young"])

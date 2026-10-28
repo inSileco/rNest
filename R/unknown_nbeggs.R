@@ -32,8 +32,8 @@ unknown_nbeggs <-
       #     if((as.numeric(difftime(dat$date[w],dat$date[ww]))-1)>(dat$laying[1]*(dat$eggs[w]-1))){dat$eggs[ww]<-1}
       #     }
       dat <- dat[!(dat$eggs == (-1) & dat$stage_code == "eggs"), ]
-      return(list(dat = dat[dat$eggs >= 0, ], unknown = FALSE)) # anciennement un FALSE ici check bug test_20120301_130733 watch out, ici on ne conserve que les observations d'oeufs non n\u0000tives car \u0000fuck lorsqu'on a de l'incubation
-      #return(list(dat=dat,unknown=FALSE))  # TEST on ne conserve que les observations d'oeufs non n\u0000tives car \u0000fuck lorsqu'on a de l'incubation
+      return(list(dat = dat[dat$eggs >= 0, ], unknown = FALSE)) # anciennement un FALSE ici check bug test_20120301_130733 watch out, ici on ne conserve que les observations d'oeufs non n\u00e9gatives car \u00e7a fuck lorsqu'on a de l'incubation
+      #return(list(dat=dat,unknown=FALSE))  # TEST on ne conserve que les observations d'oeufs non n\u00e9gatives car \u00e7a fuck lorsqu'on a de l'incubation
     }
     return(list(dat = "negative numbers; not implemented yet", unknown = FALSE))
   }

@@ -63,7 +63,6 @@ nesting.calendar.pred <-
     #d<-d[,c("date",sort(names(d)[-1]))]
     month <- get("monthlabl", envir = rnest)
     mnum <- sprintf("%02d", 1:12)
-    )
     x <- nrow(d)
     sx <- 1:x
     y <- ncol(d)
@@ -154,7 +153,13 @@ nesting.calendar.pred <-
       dates <- ifelse(dates %in% c("05", "10", "15", "20", "25"), dates, "")
       mo <- substr(d$date[i], 4, 5) == "01" || i %in% c(2, x)
       if (mo) {
-        lines(c(i - 1, i - 1), c(y, y + upbox), col = "black", lwd = 2, xpd = TRUE)
+        lines(
+          c(i - 1, i - 1),
+          c(y, y + upbox),
+          col = "black",
+          lwd = 2,
+          xpd = TRUE
+        )
         lines(c(i - 1, i - 1), c(1, y), col = "black", lwd = 1, xpd = TRUE)
       }
     }

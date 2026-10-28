@@ -1,4 +1,4 @@
 rNid <-
   function() {
-    rNest:::rNest_tcltk(lang = "fran\u0000s")
+    rNest:::rNest_tcltk(lang = "fran\u00e7ais")
   }

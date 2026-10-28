@@ -301,7 +301,11 @@ active.nest <-
               }
               stop(me12)
             }
-            d <- cbind(d[w, ], spa[w, 1, drop = FALSE], stringsAsFactors = FALSE)
+            d <- cbind(
+              d[w, ],
+              spa[w, 1, drop = FALSE],
+              stringsAsFactors = FALSE
+            )
           } else {
             d <- cbind(d, spa[, 1, drop = FALSE], stringsAsFactors = FALSE)
           }
