@@ -191,155 +191,155 @@ if(lang=="english"){
  )
 }else{
  list_lang=list(
-  header1labl="ESPÈCES",
+  header1labl="ESP\u0000ES",
   header2labl="LOCALISATION",
   header3labl="CALENDRIER",
-  intchoicelabl="tracer une région",
-  intchoiceqlabl="Permet à l'utilisateur de tracer un polygone pour choisir une région ou les écodistricts d'intérêt. En mode observation, les attributs et les régions sélectionnées à partir du fichier de forme seront ignorés.",
-  zoomlabl="zoomer une région",
-  zoomqlabl="Permet à l'utilisateur d'agrandir une région à l'aide d'un polygone lors de la sélection d'une région ou d'un écodistrict.",
-  backsplabl="arrière-plan sp",
-  backspqlabl="En mode prédiction, la carte de distribution de la première espèce sera tracée lors de la sélection des écodistricts.",
-  tkmb1="Aucune espèce ou groupe sélectionnés.",
-  tkmb2="Espèce absente des données.",
-  tkmb3="Aucun nid trouvé pour les années sélectionnées.",
-  tkmb4="Aucun nid trouvé pour les régions sélectionnées.",
-  tkmb5="Aucun écodistrict valide sélectionné.",
-  tkmb6="Aucune espèce sélectionnée.",
-  tkmb7="L'espèce n'a pas été trouvée.",
-  tkmb8="Seule la première espèce sera utilisée en arrière-plan.",
-  tkmb9="Aucune espèce ou groupe sélectionnés.",
-  tkmb10="Aucune espèce ou groupe sélectionnés.",
-  tkmb11="Mettre à jour la chronologie avec les paramètres actuels ?",
-  tkmb12="Les pourcentages et les couleurs doivent tous deux être spécifiés. Les valeurs par défaut seront utilisées.",
-  tkmb13="Aucun écodistrict sélectionné.",
-  tkmb14="Aucune espèce sélectionnée.",
-  tkmb15="Espèces n'ayant pas été retenues pour la modélisation.",
-  tkmb16="Aucun groupe sélectionné.",
-  tkmb17="Données de température manquantes pour certains écodistricts sélectionnés. Utilisez les écodistricts voisins pour une approximation.",
-  tkmb18="Les espèces sélectionnées ne se retrouvent pas dans les écodistricts sélectionnés.",
-  tkmb19=paste0("Le nombre de lignes dans les calendriers est limité à 50. Réduisez le nombre de combinaisons écodistrict/espèce/groupe.","\n","\n","Présentement: "),
-  tkmb20="Les pourcentages et les couleurs doivent tous deux être spécifiés. Les valeurs par défaut seront utilisées.",
+  intchoicelabl="tracer une r\u0000on",
+  intchoiceqlabl="Permet \u0000'utilisateur de tracer un polygone pour choisir une r\u0000on ou les \u0000districts d'int\u0000t. En mode observation, les attributs et les r\u0000ons s\u0000ctionn\u0000 \u0000artir du fichier de forme seront ignor\u0000",
+  zoomlabl="zoomer une r\u0000on",
+  zoomqlabl="Permet \u0000'utilisateur d'agrandir une r\u0000on \u0000'aide d'un polygone lors de la s\u0000ction d'une r\u0000on ou d'un \u0000district.",
+  backsplabl="arri\u0000-plan sp",
+  backspqlabl="En mode pr\u0000ction, la carte de distribution de la premi\u0000 esp\u0000 sera trac\u0000lors de la s\u0000ction des \u0000districts.",
+  tkmb1="Aucune esp\u0000 ou groupe s\u0000ctionn\u0000",
+  tkmb2="Esp\u0000 absente des donn\u0000.",
+  tkmb3="Aucun nid trouv\u0000our les ann\u0000 s\u0000ctionn\u0000.",
+  tkmb4="Aucun nid trouv\u0000our les r\u0000ons s\u0000ctionn\u0000.",
+  tkmb5="Aucun \u0000district valide s\u0000ctionn\u0000,
+  tkmb6="Aucune esp\u0000 s\u0000ctionn\u0000",
+  tkmb7="L'esp\u0000 n'a pas \u0000 trouv\u0000",
+  tkmb8="Seule la premi\u0000 esp\u0000 sera utilis\u0000en arri\u0000-plan.",
+  tkmb9="Aucune esp\u0000 ou groupe s\u0000ctionn\u0000",
+  tkmb10="Aucune esp\u0000 ou groupe s\u0000ctionn\u0000",
+  tkmb11="Mettre \u0000our la chronologie avec les param\u0000es actuels ?",
+  tkmb12="Les pourcentages et les couleurs doivent tous deux \u0000e sp\u0000fi\u0000 Les valeurs par d\u0000ut seront utilis\u0000.",
+  tkmb13="Aucun \u0000district s\u0000ctionn\u0000,
+  tkmb14="Aucune esp\u0000 s\u0000ctionn\u0000",
+  tkmb15="Esp\u0000s n'ayant pas \u0000 retenues pour la mod\u0000sation.",
+  tkmb16="Aucun groupe s\u0000ctionn\u0000,
+  tkmb17="Donn\u0000 de temp\u0000ture manquantes pour certains \u0000districts s\u0000ctionn\u0000 Utilisez les \u0000districts voisins pour une approximation.",
+  tkmb18="Les esp\u0000s s\u0000ctionn\u0000 ne se retrouvent pas dans les \u0000districts s\u0000ctionn\u0000",
+  tkmb19=paste0("Le nombre de lignes dans les calendriers est limit\u0000 50. R\u0000isez le nombre de combinaisons \u0000district/esp\u0000/groupe.","\n","\n","Pr\u0000ntement: "),
+  tkmb20="Les pourcentages et les couleurs doivent tous deux \u0000e sp\u0000fi\u0000 Les valeurs par d\u0000ut seront utilis\u0000.",
   tkmb21="Aucun fichier de forme fourni.",
-  tkmb22="Les 6 premières lignes de la table d'attributs du fichier de forme:",
+  tkmb22="Les 6 premi\u0000s lignes de la table d'attributs du fichier de forme:",
   tkmb23="Aucun nom d'attributs fourni.",
-  tkmb24="Tracez une région à agrandir avec le bouton de gauche\nUtilisez le bouton de droite pour terminer la sélection",
-  tkmb25="Sélectionnez les régions avec le bouton de gauche\nUtilisez le bouton de droite pour terminer la sélection",
+  tkmb24="Tracez une r\u0000on \u0000grandir avec le bouton de gauche\nUtilisez le bouton de droite pour terminer la s\u0000ction",
+  tkmb25="S\u0000ctionnez les r\u0000ons avec le bouton de gauche\nUtilisez le bouton de droite pour terminer la s\u0000ction",
   tkmb26="CARTE",
-  tkmb27="Sélectionnez les écodistricts en traçant une région en utilisant le bouton de gauche\nUtilisez le bouton de droite pour terminer la sélection",
-  tkmb28="Sélectionnez les écodistricts en utilisant le bouton de gauche\nUtilisez le bouton de droite pour terminer la sélection",
+  tkmb27="S\u0000ctionnez les \u0000districts en tra\u0000t une r\u0000on en utilisant le bouton de gauche\nUtilisez le bouton de droite pour terminer la s\u0000ction",
+  tkmb28="S\u0000ctionnez les \u0000districts en utilisant le bouton de gauche\nUtilisez le bouton de droite pour terminer la s\u0000ction",
   shpblabl=".shp",
   idblabl="id attributs",
-  regionblabl="régions",
-  speciesblabl="espèces",
-  yearlabl="années",
-  ecodistrictblabl="écodistricts",
+  regionblabl="r\u0000ons",
+  speciesblabl="esp\u0000s",
+  yearlabl="ann\u0000",
+  ecodistrictblabl="\u0000districts",
 
-  tkmb29=c(paste0("Sélectionnez un fichier de forme (.shp) en utilisant le bouton .shp. En mode observation, le fichier de forme est utilisé pour sélectionner des localisations de nids. En mode prédiction, le fichier de forme est utilisé comme arrière-plan des écodistricts afin de faciliter la sélection des écodistricts contenant les régions d'intérêt. Si seul le nom du fichier de forme est donné (ex: canada.shp), le fichier doit être situé dans le répertoire courant de R. Les coordonnées du fichier de forme doivent être en lat-long NAD83 (\"+proj=longlat +datum=NAD83 +no_defs +ellps=GRS80 +towgs84=0,0,0\").","\n","\n","Répertoire courant actuel: "),paste0("\n","\n","Fichier de forme sélectionné actuellement: "),paste0("\n","\n","Projection du fichier de forme: \n")),
+  tkmb29=c(paste0("S\u0000ctionnez un fichier de forme (.shp) en utilisant le bouton .shp. En mode observation, le fichier de forme est utilis\u0000our s\u0000ctionner des localisations de nids. En mode pr\u0000ction, le fichier de forme est utilis\u0000omme arri\u0000-plan des \u0000districts afin de faciliter la s\u0000ction des \u0000districts contenant les r\u0000ons d'int\u0000t. Si seul le nom du fichier de forme est donn\u0000ex: canada.shp), le fichier doit \u0000e situ\u0000ans le r\u0000rtoire courant de R. Les coordonn\u0000 du fichier de forme doivent \u0000e en lat-long NAD83 (\"+proj=longlat +datum=NAD83 +no_defs +ellps=GRS80 +towgs84=0,0,0\").","\n","\n","R\u0000rtoire courant actuel: "),paste0("\n","\n","Fichier de forme s\u0000ctionn\u0000ctuellement: "),paste0("\n","\n","Projection du fichier de forme: \n")),
 
-  tkmb30=paste0("Entrez les noms de colonnes dans la table d'attributs séparés par \",\" afin de former un identifiant pour les régions à sélectionner. Utilisez le bouton attributs pour sélectionner les noms de la table d'attributs. Les 6 premières lignes de la table d'attributs seront montrées dans la console R. Si aucun attribut n'est sélectionné, la première colonne de la table d'attribut sera utilisée pour former les identifiants. Ne pas utiliser la virgule \",\" dans le nom des colonnes.","\n","\n","Sélection courante: "),
+  tkmb30=paste0("Entrez les noms de colonnes dans la table d'attributs s\u0000r\u0000par \",\" afin de former un identifiant pour les r\u0000ons \u0000\u0000ctionner. Utilisez le bouton attributs pour s\u0000ctionner les noms de la table d'attributs. Les 6 premi\u0000s lignes de la table d'attributs seront montr\u0000 dans la console R. Si aucun attribut n'est s\u0000ctionn\u0000la premi\u0000 colonne de la table d'attribut sera utilis\u0000pour former les identifiants. Ne pas utiliser la virgule \",\" dans le nom des colonnes.","\n","\n","S\u0000ction courante: "),
 
-  tkmb31=paste0("Entrez le nom de régions formées à partir des attributs afin de sélectionner des localisations (séparés par \",\"). Utilisez le bouton des régions pour sélectionner les régions à partir d'une liste ou en sélectionnant les régions sur une carte. Si aucune sélection n'est faite, toutes les régions déterminées par les attributs considérés seront utilisées.","\n","\n","Sélection courante: "),
+  tkmb31=paste0("Entrez le nom de r\u0000ons form\u0000 \u0000artir des attributs afin de s\u0000ctionner des localisations (s\u0000r\u0000par \",\"). Utilisez le bouton des r\u0000ons pour s\u0000ctionner les r\u0000ons \u0000artir d'une liste ou en s\u0000ctionnant les r\u0000ons sur une carte. Si aucune s\u0000ction n'est faite, toutes les r\u0000ons d\u0000rmin\u0000 par les attributs consid\u0000s seront utilis\u0000.","\n","\n","S\u0000ction courante: "),
 
-  tkmb32=paste0("Sélectionnez les espèces à partir de la liste d'espèces et utilisez le bouton espèces afin de les ajouter à la boîte ou entrez manuellement une liste d'espèces séparées par \",\" (ex: AMRO,WCSP). Les espèces peuvent également être entrées à partir des groupes.","\n","\n","Sélection courante: "),
+  tkmb32=paste0("S\u0000ctionnez les esp\u0000s \u0000artir de la liste d'esp\u0000s et utilisez le bouton esp\u0000s afin de les ajouter \u0000a bo\u0000 ou entrez manuellement une liste d'esp\u0000s s\u0000r\u0000 par \",\" (ex: AMRO,WCSP). Les esp\u0000s peuvent \u0000lement \u0000e entr\u0000 \u0000artir des groupes.","\n","\n","S\u0000ction courante: "),
 
-  tkmb33=paste0("Entrez une année ou une séquence d'années séparées par \",\" (ex: 2000,2005). Par défaut, toutes les années sont utilisées. ","\n","\n","Sélection courante: "),
+  tkmb33=paste0("Entrez une ann\u0000ou une s\u0000ence d'ann\u0000 s\u0000r\u0000 par \",\" (ex: 2000,2005). Par d\u0000ut, toutes les ann\u0000 sont utilis\u0000. ","\n","\n","S\u0000ction courante: "),
 
   spcallabl="grouper par sp/groupe",
-  yearcallabl="grouper par année",
-  regioncallabl="grouper par région",
+  yearcallabl="grouper par ann\u0000,
+  regioncallabl="grouper par r\u0000on",
   orderspgrcallabl="ordonner par sp/groupe",
-  orderecocallabl="ordonner par écodistrict",
+  orderecocallabl="ordonner par \u0000district",
   butcallabl="CALENDRIER",
 
-  tkmb34=paste0("Entrez une séquence de valeurs dans l'intervalle [0,100] séparées par une \",\". La séquence doit commencer par 0 et se terminer par 100.","\n","\n","Valeurs par défaut en mode observation: 0,1,5,10,20,40,60,80,100","\n","Valeurs par défaut en mode prédiction: 0,5,10,20,40,60,80,100","\n","\n","Sélection courante: "),
+  tkmb34=paste0("Entrez une s\u0000ence de valeurs dans l'intervalle [0,100] s\u0000r\u0000 par une \",\". La s\u0000ence doit commencer par 0 et se terminer par 100.","\n","\n","Valeurs par d\u0000ut en mode observation: 0,1,5,10,20,40,60,80,100","\n","Valeurs par d\u0000ut en mode pr\u0000ction: 0,5,10,20,40,60,80,100","\n","\n","S\u0000ction courante: "),
 
-  tkmb35=paste0("Entrez une série de couleurs séparées par \",\" pour utiliser dans le calendrier. Les couleurs peuvent être représentées par leur nom en anglais ainsi que par des chiffres ou leur code alpha numérique. Tapez \"?colors\" dans la console R pour obtenir de l'aide sur la spécification des couleurs.","\n","\n","Valeurs par défaut en mode observation: c(\"grey85\",\"grey65\",brewer.pal(length(percentages)-4,\"YlOrRd\"),\"darkred\")","\n","\n","Valeurs par défaut en mode prédiction: c(\"white\",brewer.pal(length(percentages)-3,\"YlOrRd\"),\"darkred\")","\n","\n","Sélection courante: "),
+  tkmb35=paste0("Entrez une s\u0000e de couleurs s\u0000r\u0000 par \",\" pour utiliser dans le calendrier. Les couleurs peuvent \u0000e repr\u0000nt\u0000 par leur nom en anglais ainsi que par des chiffres ou leur code alpha num\u0000que. Tapez \"?colors\" dans la console R pour obtenir de l'aide sur la sp\u0000fication des couleurs.","\n","\n","Valeurs par d\u0000ut en mode observation: c(\"grey85\",\"grey65\",brewer.pal(length(percentages)-4,\"YlOrRd\"),\"darkred\")","\n","\n","Valeurs par d\u0000ut en mode pr\u0000ction: c(\"white\",brewer.pal(length(percentages)-3,\"YlOrRd\"),\"darkred\")","\n","\n","S\u0000ction courante: "),
 
-  tkmb36=paste0("Lorsque le nombre de nids pour une combinaison donnée est inférieur à la valeur spécifiée dans la boîte de droite, aucune variation en intensité ne sera donnée et une couleur uniforme (deepskyblue3) sera utilisée. Cette couleur peut être modifiée dans la boîte de gauche."),
+  tkmb36=paste0("Lorsque le nombre de nids pour une combinaison donn\u0000est inf\u0000eur \u0000a valeur sp\u0000fi\u0000dans la bo\u0000 de droite, aucune variation en intensit\u0000e sera donn\u0000et une couleur uniforme (deepskyblue3) sera utilis\u0000 Cette couleur peut \u0000e modifi\u0000dans la bo\u0000 de gauche."),
 
   propbutlabl="pourcentages",
   colobutlabl="couleurs",
   showpropbutlabl="nb nids",
-  usplabl="espèces",
+  usplabl="esp\u0000s",
   ugrlabl="groupes",
-  uallsplabl="toutes les espèces",
-  uselectsplabl="espèces sélectionnées",
-  ugroupslabl="groupes sélectionnés",
-  tkmb37="Espèces",
-  lgroupsl=list(statut=c("fédéral","provincial"),
+  uallsplabl="toutes les esp\u0000s",
+  uselectsplabl="esp\u0000s s\u0000ctionn\u0000",
+  ugroupslabl="groupes s\u0000ctionn\u0000,
+  tkmb37="Esp\u0000s",
+  lgroupsl=list(statut=c("f\u0000ral","provincial"),
                 type=c("terrestre","aquatique","sauvagine","limicole"),
                 habitat=c("forestier","ouvert","humide"),
-                type_de_nid=c("sol","eau","végétation","cavité","anthropique","falaise","colonie"),
-                modèle=c("acceptée","rejetée"),
-                famille=c("oies","cygnes","barboteurs","plongeurs","gallinacés","huarts et grèbes","pétrels et alliés","cormorants","pélicans","ardéidés","rapaces diurnes","rallidés","limicoles","goélands et mouettes","sternes","labbes","alcidés","tourterelles et pigeons","coucous","strigidés","engoulevents","hirondelles et alliés","colibris","martin-pêcheurs","pic-bois","moucherolles","pie-grièches","viréos","corvidés","pipits et alliés","mésanges et alliés","sitelles et grimpereaux","troglodytes et cincle","roitelets et alliés","autres","grives","moqueurs et alliés","urbains","jaseurs","plectrophanes","parulines","bruants et alliés","cardinaux et alliés","ictéridés et orioles","fringillidés","bec-croisés","sizerins")
+                type_de_nid=c("sol","eau","v\u0000tation","cavit\u0000"anthropique","falaise","colonie"),
+                mod\u0000=c("accept\u0000,"rejet\u0000),
+                famille=c("oies","cygnes","barboteurs","plongeurs","gallinac\u0000,"huarts et gr\u0000s","p\u0000els et alli\u0000,"cormorants","p\u0000cans","ard\u0000\u0000,"rapaces diurnes","rallid\u0000,"limicoles","go\u0000nds et mouettes","sternes","labbes","alcid\u0000,"tourterelles et pigeons","coucous","strigid\u0000,"engoulevents","hirondelles et alli\u0000,"colibris","martin-p\u0000eurs","pic-bois","moucherolles","pie-gri\u0000es","vir\u0000","corvid\u0000,"pipits et alli\u0000,"m\u0000nges et alli\u0000,"sitelles et grimpereaux","troglodytes et cincle","roitelets et alli\u0000,"autres","grives","moqueurs et alli\u0000,"urbains","jaseurs","plectrophanes","parulines","bruants et alli\u0000,"cardinaux et alli\u0000,"ict\u0000d\u0000et orioles","fringillid\u0000,"bec-crois\u0000,"sizerins")
                 ),
   group1labl="groupe1",
   groupb1labl="ajouter",
   groupc1labl="effacer",
   groupcall1labl="effacer tout",
-  groupsp1labl="-> espèces",
+  groupsp1labl="-> esp\u0000s",
   group2labl="groupe2",
   groupb2labl="ajouter",
   groupc2labl="effacer",
   groupcall2labl="effacer tout",
-  groupsp2labl="-> espèces",
+  groupsp2labl="-> esp\u0000s",
   group3labl="groupe3",
   groupb3labl="ajouter",
   groupc3labl="effacer",
   groupcall3labl="effacer tout",
-  groupsp3labl="-> espèces",
+  groupsp3labl="-> esp\u0000s",
   group4labl="groupe4",
   groupb4labl="ajouter",
   groupc4labl="effacer",
   groupcall4labl="effacer tout",
-  groupsp4labl="-> espèces",
+  groupsp4labl="-> esp\u0000s",
   group5labl="groupe5",
   groupb5labl="ajouter",
   groupc5labl="effacer",
   groupcall5labl="effacer tout",
-  groupsp5labl="-> espèces",
+  groupsp5labl="-> esp\u0000s",
   group6labl="groupe6",
   groupb6labl="ajouter",
   groupc6labl="effacer",
   groupcall6labl="effacer tout",
-  groupsp6labl="-> espèces",
-  useprecalclabl="données précalculées",
-  loaddatalabl="Charger les données",
+  groupsp6labl="-> esp\u0000s",
+  useprecalclabl="donn\u0000 pr\u0000lcul\u0000",
+  loaddatalabl="Charger les donn\u0000",
   lab1labl="Observations de nids",
-  lab2labl="Paramètres de nidification",
+  lab2labl="Param\u0000es de nidification",
   lab3labl="Codes de statut de nidification",
   lab4labl="Groupes d'oiseaux",
   butbrowselabl="chercher",
   menutestlabl="Tester",
   menufilelabl="Fichier",
-  menuloaddatalabl="Charger les données",
+  menuloaddatalabl="Charger les donn\u0000",
   menuquitlabl="Quitter",
-  menuretrolabl="Paramètres de rétrocalculation",
-  menuranlabl="Observations aléatoires",
+  menuretrolabl="Param\u0000es de r\u0000ocalculation",
+  menuranlabl="Observations al\u0000oires",
   menuficlabl="Observations fictives",
-  menuexplabl="Explorer les données",
+  menuexplabl="Explorer les donn\u0000",
   header4labl="GROUPES",
   grouplabl="Noms des groupes",
-  butpredlabl="MODE PRÉDICTION",
+  butpredlabl="MODE PR\u0000ICTION",
   butobslabl="MODE OBSERVATION",
   butrunlabl="ESTIMER LA CHRONOLOGIE",
   butmaplabl="LOCALISATION DES NIDS",
-  butecolabl="LOCALISATION DES ÉCODISTRICTS",
-  butsplabl="AIRE DE RÉPARTITION",
-  tkmb38=c("Nécessite","couleurs"),
-  monthlabl=c("Janvier","Février","Mars","Avril","Mai","Juin","Juillet","Août","Septembre","Octobre","Novembre","Décembre"),
-  leboxlabl="(Nb d'espèces)",
-  lebox2labl="Espèce/groupe",
+  butecolabl="LOCALISATION DES \u0000ODISTRICTS",
+  butsplabl="AIRE DE R\u0000ARTITION",
+  tkmb38=c("N\u0000ssite","couleurs"),
+  monthlabl=c("Janvier","F\u0000ier","Mars","Avril","Mai","Juin","Juillet","Ao\u0000Septembre","Octobre","Novembre","D\u0000mbre"),
+  leboxlabl="(Nb d'esp\u0000s)",
+  lebox2labl="Esp\u0000/groupe",
   titlesnlabl="NID UNIQUE",
   header1snlabl="Choisissez un identifiant de nid",
-  header2snlabl="Entrez un nom pour créer un objet",
+  header2snlabl="Entrez un nom pour cr\u0000 un objet",
   header22snlabl="dans la console R avec le dernier nid",
-  titre1snlabl="Nid aléatoire",
-  titre2snlabl="Nid aléatoire d'une espèce",
+  titre1snlabl="Nid al\u0000oire",
+  titre2snlabl="Nid al\u0000oire d'une esp\u0000",
   titre3snlabl="Identifiant de nid",
-  tkmb39="Code d'espèce absent des données",
-  tkmb40="Identifiant de nid absent des données",
+  tkmb39="Code d'esp\u0000 absent des donn\u0000",
+  tkmb40="Identifiant de nid absent des donn\u0000",
   bouton="obtenir",
   boutonc="quitter",
   titlesntlabl="SIMULATION",
@@ -347,33 +347,33 @@ if(lang=="english"){
   incublabl="incubation",
   rearlabl="jeunes",
   laylabl="intervalle de ponte",
-  beglabl="début de l'incubation",
-  clutchlabl="taille de couvée",
-  clutchminlabl="taille de couvée min",
-  clutchmaxlabl="taille de couvée max",
-  useminclutchlabl="utiliser la couvée minimale?",
+  beglabl="d\u0000t de l'incubation",
+  clutchlabl="taille de couv\u0000,
+  clutchminlabl="taille de couv\u0000min",
+  clutchmaxlabl="taille de couv\u0000max",
+  useminclutchlabl="utiliser la couv\u0000minimale?",
   incflexplabl="incubation flex. +",
   incflexmlabl="incubation flex. -",
   eggslabl="oeufs",
   younglabl="jeunes",
-  period10labl="La période donnée doit être > à 10 jours",
-  chdatelab1labl="date début",
+  period10labl="La p\u0000ode donn\u0000doit \u0000e > \u00000 jours",
+  chdatelab1labl="date d\u0000t",
   chdatelab2labl="date fin",
-  newinlabl="La période donnée doit être > à 10 jours",
+  newinlabl="La p\u0000ode donn\u0000doit \u0000e > \u00000 jours",
   refreshlabl="actualiser",
   bouton1sntlabl="estimer",
-  bouton3sntlabl="écrire bug",
+  bouton3sntlabl="\u0000ire bug",
   bouton2sntlabl="changer les dates",
-  uncheckall="désélectionner tout",
-  tkmb41=paste0("Entrez les numéros d'identifiant des écodistricts souhaités (séparés par \",\"). Utilisez le bouton écodistrict pour les sélectionner à partir d'une carte.","\n","\n","Sélection courante: "),
-  butcalqtext="Produit un calendrier d'observation montrant le pourcentage de nids actifs ou un calendrier de prédictions montrant le pourcentage d'espèces en nidification. En mode observation, il sera demandé à l'utilisateur si la chronologie doit être mise à jour en fonction des paramètres actuels pour produire un nouveau calendrier.",
-  butrunqtext="Estime la chronologie pour les paramètres actuels. Une fois que la chronologie est estimée pour une sélection donnée, utilisez le bouton calendrier pour illustrer les résultats dans un calendrier d'observation. Il est également possible d'utiliser directement le bouton calendrier pour modifier la chronologie en fonction des nouveaux paramètres choisis. Dans certains cas, l'estimation de la chronologie peut prendre un certain temps, particulièrement si plusieurs nids sont utilisés et si les données précalculées ne sont pas utilisées.",
-  butmapqtext="Illustre la localisation des nids et des régions sélectionnées. Lorsqu'une région est tracée par l'utilisateur, les nids en dehors de la région tracée sont également illustrés.",
-  butspqtext="Illustre les écodistricts où l'espèce est trouvée. Seule l'aire de répartition de la première espèce listée dans la boîte d'espèce sera illustrée.",
-  butecoqtext="Illustre la localisation des écodistricts choisis.",
-  namebackqtext="Écrivez un nom dans la boîte de gauche pour créer un objet du même nom dans la console R avec les nids choisis et les dates d'initiation et d'envol. Utilisez les données précalculées pour accélérer le temps de calcul. Ne pas utiliser les données précalculées peut considérablement augmenter le temps de calcul, particulièrement lorsque plusieurs nids sont considérés.",
-  namerawcalqtext="Écrivez un nom dans la boîte de gauche pour créer un objet du même nom dans la console R avec les valeurs utilisées pour le calendrier.",
-  groupqtext="Sélectionnez les caractéristiques des espèces contenues dans la liste d'espèces. L'utilisation des boutons des différents groupements permet de sélectionner toutes les caractéristiques de ce groupe. Seules les espèces ayant les caractéristiques sélectionnées seront incluses dans la liste d'espèces.\n\nFormez des groupes en sélectionnant les espèces à partir de la liste et en les ajoutant aux groupes. Modifiez les noms de groupes en écrivant dans les boîtes correspondantes.",
+  uncheckall="d\u0000lectionner tout",
+  tkmb41=paste0("Entrez les num\u0000s d'identifiant des \u0000districts souhait\u0000(s\u0000r\u0000par \",\"). Utilisez le bouton \u0000district pour les s\u0000ctionner \u0000artir d'une carte.","\n","\n","S\u0000ction courante: "),
+  butcalqtext="Produit un calendrier d'observation montrant le pourcentage de nids actifs ou un calendrier de pr\u0000ctions montrant le pourcentage d'esp\u0000s en nidification. En mode observation, il sera demand\u0000 l'utilisateur si la chronologie doit \u0000e mise \u0000our en fonction des param\u0000es actuels pour produire un nouveau calendrier.",
+  butrunqtext="Estime la chronologie pour les param\u0000es actuels. Une fois que la chronologie est estim\u0000pour une s\u0000ction donn\u0000 utilisez le bouton calendrier pour illustrer les r\u0000ltats dans un calendrier d'observation. Il est \u0000lement possible d'utiliser directement le bouton calendrier pour modifier la chronologie en fonction des nouveaux param\u0000es choisis. Dans certains cas, l'estimation de la chronologie peut prendre un certain temps, particuli\u0000ment si plusieurs nids sont utilis\u0000et si les donn\u0000 pr\u0000lcul\u0000 ne sont pas utilis\u0000.",
+  butmapqtext="Illustre la localisation des nids et des r\u0000ons s\u0000ctionn\u0000. Lorsqu'une r\u0000on est trac\u0000par l'utilisateur, les nids en dehors de la r\u0000on trac\u0000sont \u0000lement illustr\u0000",
+  butspqtext="Illustre les \u0000districts o\u0000sp\u0000 est trouv\u0000 Seule l'aire de r\u0000rtition de la premi\u0000 esp\u0000 list\u0000dans la bo\u0000 d'esp\u0000 sera illustr\u0000",
+  butecoqtext="Illustre la localisation des \u0000districts choisis.",
+  namebackqtext="\u0000rivez un nom dans la bo\u0000 de gauche pour cr\u0000 un objet du m\u0000 nom dans la console R avec les nids choisis et les dates d'initiation et d'envol. Utilisez les donn\u0000 pr\u0000lcul\u0000 pour acc\u0000rer le temps de calcul. Ne pas utiliser les donn\u0000 pr\u0000lcul\u0000 peut consid\u0000blement augmenter le temps de calcul, particuli\u0000ment lorsque plusieurs nids sont consid\u0000s.",
+  namerawcalqtext="\u0000rivez un nom dans la bo\u0000 de gauche pour cr\u0000 un objet du m\u0000 nom dans la console R avec les valeurs utilis\u0000 pour le calendrier.",
+  groupqtext="S\u0000ctionnez les caract\u0000stiques des esp\u0000s contenues dans la liste d'esp\u0000s. L'utilisation des boutons des diff\u0000nts groupements permet de s\u0000ctionner toutes les caract\u0000stiques de ce groupe. Seules les esp\u0000s ayant les caract\u0000stiques s\u0000ctionn\u0000 seront incluses dans la liste d'esp\u0000s.\n\nFormez des groupes en s\u0000ctionnant les esp\u0000s \u0000artir de la liste et en les ajoutant aux groupes. Modifiez les noms de groupes en \u0000ivant dans les bo\u0000s correspondantes.",
   rNestname="rNid"
  )
 }
@@ -427,7 +427,7 @@ if(lang=="english"){
                                                       ans
                                                       })
                 ans<-apply(ans,1,any)
-                sg2<-cbind(sg2,as.integer(ans),stringsAsFactors=F)
+                sg2<-cbind(sg2,as.integer(ans),stringsAsFactors=FALSE)
                 names(sg2)[ncol(sg2)]<-paste(names(lg2)[i],lg2[[i]][j],sep="_")
                 }
           }
@@ -486,7 +486,7 @@ if(lang=="english"){
                species1<-tclvalue(tkget(species));species1<-if(species1==""){FALSE}else{unlist(strsplit(species1,","))}
                years1<-tclvalue(tkget(year));years1<-if(years1==""){FALSE}else{as.numeric(unlist(strsplit(years1,",")))}
                years1<-if(length(years1)==1){years1}else{years1[1]:years1[2]}
-               shp1<-tclvalue(tkget(shp));shp1<-if(shp1==""){FALSE}else{shp1} #attention, les fonctions de bases veulent le shp dans le répertoire courant
+               shp1<-tclvalue(tkget(shp));shp1<-if(shp1==""){FALSE}else{shp1} #attention, les fonctions de bases veulent le shp dans le r\u0000rtoire courant
                if(!identical(shp1,get("usershppath",envir=rnest))){
                 assign("usershppath",shp1,envir=rnest)
                 if(!is.logical(shp1)){
@@ -500,7 +500,7 @@ if(lang=="english"){
                  assign("usershp",ecodistricts,envir=rnest)
                 }
                }
-               id1<-tclvalue(tkget(id));id1<-if(id1==""){FALSE}else{unlist(strsplit(id1,","))} #mettre le ID à FALSE ici
+               id1<-tclvalue(tkget(id));id1<-if(id1==""){FALSE}else{unlist(strsplit(id1,","))} #mettre le ID \u0000ALSE ici
                region1<-tclvalue(tkget(region));region1<-if(region1==""){FALSE}else{unlist(strsplit(region1,","))}
                intchoice1<-as.logical(as.numeric(tclvalue(intchoiceval)))
                zoom1<-as.logical(as.numeric(tclvalue(zoomval)))
@@ -552,14 +552,14 @@ if(lang=="english"){
                    pol<-ecodistricts
                   }
                   xx<-x
-                  coordinates(xx)<-cbind(xx$lon,xx$lat,stringsAsFactors=F)
-                  slot(pol,"data")<-data.frame(reg=apply(slot(pol,"data")[,l$id,drop=F],1,paste,collapse="_"),stringsAsFactors=F)
+                  coordinates(xx)<-cbind(xx$lon,xx$lat,stringsAsFactors=FALSE)
+                  slot(pol,"data")<-data.frame(reg=apply(slot(pol,"data")[,l$id,drop=F],1,paste,collapse="_"),stringsAsFactors=FALSE)
                   if(!identical(l$region,FALSE)){
                    proj4string(xx)<-CRS(proj4string(pol))
                    reg<-over(xx,pol)
                   }
                   #reg<-reg[,l$id,drop=F]
-                  #ici il faudrait trouver le moyen d'intégrer le polygone tracé pour réduire le temps du overlay très important
+                  #ici il faudrait trouver le moyen d'int\u0000er le polygone trac\u0000our r\u0000ire le temps du overlay tr\u0000important
                   #reg<-apply(reg,1,paste,collapse="_")
                   x11()
                   par(mar=c(2,0,0,0))
@@ -590,9 +590,9 @@ if(lang=="english"){
                  if(!is.logical(l$layer)){
                   fshp<-get("usershp",envir=rnest)
                   #fshp<-readShapeSpatial(x)
-                  plot(fshp,add=T)
+                  plot(fshp,add=TRUE)
                  }
-                 plot(ecodistricts[w,],col=ifelse(!(ecodistricts@data[w,"ecodistrict"]%in%predictions$ecodistrict),gray(0.9),"lightgoldenrod"),add=TRUE)
+                 plot(ecodistricts[w,],col=ifelse(!(ecodistricts@data[w,"ecodistrict"]%in%predictions$ecodistrict),gray(0.9),"lightgoldenrod"),add=TRUERUE)
                  coo<-coordinates(ecodistricts[w,])
                  text(coo[,1],coo[,2],ecodistricts@data[w,"ecodistrict"],cex=0.7,font=2)
                 }
@@ -620,7 +620,7 @@ if(lang=="english"){
         return()
        }
       }
-      
+
       mapspbackground<-function(warnsp=TRUE){
        tkconfigure(tt,cursor="watch")
        on.exit(tkconfigure(tt,cursor="arrow"))
@@ -633,7 +633,7 @@ if(lang=="english"){
         return()
        }
       }
-                 
+
       run<-function(){
               tkconfigure(tt,cursor="watch")
               on.exit(tkconfigure(tt,cursor="arrow"))
@@ -664,7 +664,7 @@ if(lang=="english"){
                         }
                    on.exit(tkconfigure(tt,cursor="arrow"))
                    namerawcal1<-tclvalue(tkget(namerawcal))
-                   res<-nesting.activity(get("ans",envir=rnest),n=T,dates=F,by=tclvalue(cal),chronology=F)
+                   res<-nesting.activity(get("ans",envir=rnest),n=T,dates=F,by=tclvalue(cal),chronology=FALSE)
                    if(namerawcal1!=""){assign(namerawcal1,res,envir=.GlobalEnv)}
                    prop<-tclvalue(tkget(prop))
                    color<-tclvalue(tkget(colo))
@@ -684,8 +684,8 @@ if(lang=="english"){
                    res<-res[,c("date",rev(names(res)[-1]))]
                    nesting.calendar(res,color.scale=TRUE,dates=c(tclvalue(tkget(datebeg)),tclvalue(tkget(dateend))),type=tclvalue(cal),color=color,prop=prop,cons=as.numeric(tclvalue(tkget(showpropnest))),colcons=colcons,list_lang=list_lang)
                    }
-                   
-                   
+
+
      calendarpred<-function(){
                    tkconfigure(tt,cursor="watch")
                    on.exit(tkconfigure(tt,cursor="arrow"))
@@ -716,7 +716,7 @@ if(lang=="english"){
                     }
                    }
                    if(!any(predictions[,"ecodistrict"]%in%leco)){tkmessageBox(title="",message=get("tkmb17",envir=rnest),icon="info",type="ok");return()}
-                   cal<-data.frame(date=c("nb_nest",substr(seq.Date(as.Date("2001-01-01"),as.Date("2001-12-31"),by=1)[1:365],6,10)),stringsAsFactors=F)
+                   cal<-data.frame(date=c("nb_nest",substr(seq.Date(as.Date("2001-01-01"),as.Date("2001-12-31"),by=1)[1:365],6,10)),stringsAsFactors=FALSE)
                    for(i in seq_along(leco)){
 	                  xeco<-predictions[which(predictions[,"ecodistrict"]==leco[i]),]
                     for(j in seq_along(lgro)){
@@ -728,7 +728,7 @@ if(lang=="english"){
  	                   a[1,]<-sapply(a1,function(k){k[1]})
  	                   a<-as.list(a)
  	                   names(a)<-names(a1)
-                     cal<-cbind(cal,temp=a,stringsAsFactors=F)
+                     cal<-cbind(cal,temp=a,stringsAsFactors=FALSE)
  	                   names(cal)[ncol(cal)]<-paste(leco[i],names(lgro)[j],sep="___")
                     }
                    }
@@ -879,7 +879,7 @@ if(lang=="english"){
                                  repeat{
                                       loc<-locator(1)
                                       if(is.null(loc)){break}
-                                      locx<-data.frame(x=loc$x,y=loc$y,stringsAsFactors=F)
+                                      locx<-data.frame(x=loc$x,y=loc$y,stringsAsFactors=FALSE)
                                       coordinates(locx)<-cbind(locx$x,locx$y)
                                       proj4string(locx)<-CRS(proj4string(ll$shape))
                                       temp<-over(ll$shape,locx,returnList=FALSE)
@@ -927,7 +927,7 @@ if(lang=="english"){
                           if(!is.logical(l$layer)){
                            fshp<-get("usershp",envir=rnest)
                            #fshp<-readShapeSpatial(x)
-                           plot(fshp,add=T)
+                           plot(fshp,add=TRUE)
                           }
                           if(l$zoom){
                            mtext(get("tkmb24",envir=rnest),side=1,outer=FALSE,font=2,cex=1.1)
@@ -936,7 +936,7 @@ if(lang=="english"){
                            plot(ecodistricts,xlim=range(bbox(pol)[1,]),ylim=range(bbox(pol)[2,]))
                           }
                           if(l$backsp){mapspbackground(warnsp=warnsp)}
-                          if(exists("fshp")){plot(fshp,add=T)}
+                          if(exists("fshp")){plot(fshp,add=TRUE)}
                           if(l$int.choice){
                            mtext(get("tkmb27",envir=rnest),side=1,outer=FALSE,font=2,cex=1.1)
                            pol<-getpoly(quiet=T)
@@ -945,9 +945,9 @@ if(lang=="english"){
                            #browser()
                            pol<-SpatialPolygons(list(Polygons(list(Polygon(pol[c(1:nrow(pol),1),])),ID=1)),proj4string=CRS(proj4string(ecodistricts)))
                            o<-over(pol,ecodistricts,returnList=TRUE)
-                           plot(ecodistricts[o[[1]],],add=T,col="lightgoldenrod")
-                           if(exists("fshp")){plot(fshp,add=T)}
-                           plot(pol,lwd=4,border="darkgreen",add=TRUE)
+                           plot(ecodistricts[o[[1]],],add=TRUE,col="lightgoldenrod")
+                           if(exists("fshp")){plot(fshp,add=TRUE)}
+                           plot(pol,lwd=4,border="darkgreen",add=TRUERUE)
                            x<-paste(sort(unique(ecodistricts$ecodistrict[o[[1]]])),collapse=",")
                            tkconfigure(ecodistrict,textvariable=tclVar(x))
                            tkgrid(ecodistrict,row=11,column=1,sticky="w")
@@ -957,7 +957,7 @@ if(lang=="english"){
                            mtext(get("tkmb28",envir=rnest),side=1,outer=FALSE,font=2,cex=1.1)
                            loc<-locator(1)
                            if(is.null(loc)){break}
-                           locx<-data.frame(x=loc$x,y=loc$y,stringsAsFactors=F)
+                           locx<-data.frame(x=loc$x,y=loc$y,stringsAsFactors=FALSE)
                            coordinates(locx)<-cbind(locx$x,locx$y)
                            proj4string(locx)<-CRS(proj4string(ecodistricts))
                            temp<-over(locx,ecodistricts,returnList=FALSE)[,"ecodistrict",drop=TRUE]
@@ -970,16 +970,16 @@ if(lang=="english"){
                             polid<-c(polid,w)
                             couleur<-"lightgoldenrod"
                            }
-                            plot(ecodistricts[w,],add=T,col=couleur)
+                            plot(ecodistricts[w,],add=TRUE,col=couleur)
                            }
-                           if(exists("fshp")){plot(fshp,add=T)}
+                           if(exists("fshp")){plot(fshp,add=TRUE)}
                            polid<-sort(unique(polid))
                            x<-paste(unique(ecodistricts$ecodistrict[polid]),collapse=",")
                            tkconfigure(ecodistrict,textvariable=tclVar(x))
                            tkgrid(ecodistrict,row=11,column=1,sticky="w")
                           }
                          }
-                    
+
 
      getgroups<-function(nn=n){
                      members<-lapply(1:nn,function(i){
@@ -1054,7 +1054,7 @@ if(lang=="english"){
      propfun<-function(){tkmessageBox(title="",message=paste0(get("tkmb34",envir=rnest),tclvalue(tkget(prop))),icon="info",type="ok")}
      showcol<-function(){tkmessageBox(title="",message=paste0(get("tkmb35",envir=rnest),tclvalue(tkget(colo))),icon="info",type="ok")}
      showpropcol<-function(){tkmessageBox(title="",message=paste0(get("tkmb36",envir=rnest)),icon="info",type="ok")}
-                   
+
      propbut<-tkbutton(tt,text=get("propbutlabl",envir=rnest),width=11,command=propfun,pady=0,bg="grey85")
      prop<-tkentry(tt,width=25,textvariable=tclVar(""))
      propq<-tkbutton(tt,text="?",pady=0,bg="grey85",command=propfun)
@@ -1082,7 +1082,7 @@ if(lang=="english"){
      tkconfigure(uallsp,variable=uspgroup,value="uallsp",text=get("uallsplabl",envir=rnest))
      tkconfigure(uselectsp,variable=uspgroup,value="uselectsp",text=get("uselectsplabl",envir=rnest))
      tkconfigure(ugroups,variable=uspgroup,value="ugroups",text=get("ugroupslabl",envir=rnest))
-     
+
      #makegroup<-function(tt=tt,nn=n){
 
      #ll<-unique(d$species_code)
@@ -1133,7 +1133,7 @@ if(lang=="english"){
      }
      tclServiceMode(TRUE)
      }
-     
+
      rejected<-function(fromobsbut=FALSE){
       if(fromobsbut){
        assign("model_output_rejected_val",tclVar(ifelse(get("predict",envir=rnest),"0","0")),envir=rnest)
@@ -1147,7 +1147,7 @@ if(lang=="english"){
        }
       }
      }
-     
+
      ### first set
      pos<-3
      for(i in 1:(length(lgroups)-1)){
@@ -1593,7 +1593,7 @@ if(lang=="english"){
 
      butpred<-tkbutton(tt,text=get("butpredlabl",envir=rnest),bg="grey55",width=115,bg="lightblue",fg="red",font=fontmode,command=function(){tclServiceMode(FALSE);widget(predict=FALSE);rejected(fromobsbut=FALSE);relistsp(sg,lgroups);tclServiceMode(TRUE)})
      butobs<-tkbutton(tt,text=get("butobslabl",envir=rnest),bg="grey55",width=115,bg="lightgreen",fg="red",font=fontmode,command=function(){tclServiceMode(FALSE);widget(predict=TRUE);rejected(fromobsbut=TRUE);relistsp(sg,lgroups);tclServiceMode(TRUE)})
-     
+
      butrun<-tkbutton(tt,text=get("butrunlabl",envir=rnest),bg="grey55",width=27,command=run)
      butrunq<-tkbutton(tt,text="?",pady=0,bg="grey85",command=function(){tkmessageBox(title="",message=get("butrunqtext",envir=rnest),icon="info",type="ok")})
      butmap<-tkbutton(tt,text=get("butmaplabl",envir=rnest),bg="grey55",width=27,command=mapnest)
