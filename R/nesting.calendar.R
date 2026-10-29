@@ -60,20 +60,7 @@ nesting.calendar <-
     if (!is.null(list_lang)) {
       month <- get("monthlabl", envir = rnest)
     } else {
-      month <- c(
-        "january",
-        "february",
-        "march",
-        "april",
-        "may",
-        "june",
-        "july",
-        "august",
-        "september",
-        "october",
-        "november",
-        "december"
-      )
+      month <- tolower(month.name)
     }
     mnum <- sprintf("%02d", 1:12)
     x <- nrow(d)
@@ -130,11 +117,11 @@ nesting.calendar <-
     for (j in sy) {
       for (i in sx[-length(sx)]) {
         val <- d[-1, j][i]
-        colo <- if (d[1, j] < cons & val > 0.0000000000001) {
+        colo <- if (d[1, j] < cons & val > 1e-13) {
           colcons
         } else {
           color[
-            if (val < 0.0000000000001) {
+            if (val < 1e-13) {
               "white"
             } else {
               ma <- max(which(prop <= val))
