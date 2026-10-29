@@ -68,6 +68,7 @@ tk.single.nest <- function(list_lang) {
       assign(temp, ans, envir = .GlobalEnv)
     }
     cat_brs(4)
+    print(ans)
     if (length(ans) == 3) {
       cat_brs()
       print(y)

@@ -7,5 +7,6 @@ Author: Francois Rousseu, Bruno Drolet
 Maintainer: Francois Rousseu <francoisrousseu@hotmail.com>
 Depends: tcltk, svMisc, splancs, mapdata, rgdal, maptools, data.table, sp, rgeos, plyr, RColorBrewer
 Imports: yaml
+Suggests: testthat
 Description: Tools for estimating nesting chronology and describing breeding phenology in birds using nest observations.
 License: GPL 2.0

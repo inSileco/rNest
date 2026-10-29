@@ -59,9 +59,10 @@ chronology <- function(
   ) {
     #print("11111111")
     #species<-read.csv("species2precocial.csv",header=T,stringsAsFactors=FALSE)
-    species <- nestingparameters
     if (!is.null(nparam)) {
       species <- nparam
+    } else {
+      species <- nestingparameters
     }
     spinfo <- which(species$sp == dat$species_code[1])
     if (length(spinfo) != 1) {

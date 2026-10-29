@@ -3,6 +3,8 @@
 # Build from the package root:
 #   docker build -f inst/Dockerfile -t rnest .
 #
+# The build runs the test suite in tests/ and fails if a test fails.
+#
 # Run R in the container:
 #   docker run --rm -it rnest
 #
@@ -66,6 +68,8 @@ RUN echo 'options(repos = c(CRAN = "https://cran.r-project.org"))' \
     XML_3.98-1.1 \
     rversions_1.0.0 \
     devtools_1.8.0 \
+    crayon_1.3.0 \
+    testthat_0.10.0 \
   ; do \
     name=${pkg%%_*}; \
     curl -fsSL -o /tmp/$pkg.tar.gz \
@@ -77,7 +81,12 @@ RUN echo 'options(repos = c(CRAN = "https://cran.r-project.org"))' \
 
 # The sources are encoded in latin1 (they were written on Windows), including
 # some identifiers, so they must be parsed in a latin1 locale.
+# The test suite (tests/) runs after installation; a failing test fails the
+# build.
 COPY . /tmp/rNest
-RUN LC_ALL=en_US.ISO-8859-1 R CMD INSTALL /tmp/rNest && rm -rf /tmp/rNest
+RUN LC_ALL=en_US.ISO-8859-1 R CMD INSTALL /tmp/rNest \
+  && cd /tmp/rNest/tests \
+  && LC_ALL=en_US.ISO-8859-1 Rscript testthat.R \
+  && rm -rf /tmp/rNest
 
 CMD ["R"]
