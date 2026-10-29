@@ -8,8 +8,6 @@ chronology <- function(
   nact = TRUE,
   lsc = NULL
 ) {
-  #browser()
-  #dat<-don
   dat <- dat[order(dat$nest_id, dat$date, dat$visit_id), ] # added 2012-11-06 because only using the chronology function gave different results than active.nest with unordered data (which is presumably done within active.nest)
   if (is.data.table(dat)) {
     dat <- as.data.frame(dat)

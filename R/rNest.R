@@ -1,4 +1,3 @@
-rNest <-
-  function() {
-    rNest:::rNest_tcltk(lang = "english")
-  }
+rNest <- function() rNest_tcltk(lang = "english")
+
+rNid <- function() rNest_tcltk(lang = "fran\u00e7ais")

@@ -43,7 +43,7 @@ rNest_tcltk <- function(lang = "english") {
   )
   x <- SpatialPolygonsDataFrame(x, data = dat, match.ID = FALSE)
   ecodistricts <- x
-  rNest:::tk.nesting.calendar(ecodistricts = ecodistricts, lang = lang)
+  tk.nesting.calendar(ecodistricts = ecodistricts, lang = lang)
   #winMenuAddItem("rNest","single nest","rNesttest:::tk.single.nest()")
   #winMenuAddItem("rNest","single nest test","rNesttest:::tk.single.nest.test()")
   #winMenuAddItem("rNest","nesting calendar","rNesttest:::tk.nesting.calendar()")

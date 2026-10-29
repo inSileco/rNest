@@ -232,12 +232,6 @@ tk.single.nest.test <-
       )
       ans <- merge(dat, nparam)
       curpath <- getwd()
-      getwd()
-      setwd(
-        "C:/Users/User/Documents/RETROBIRD/Programmation/Codes and species info/testbug/"
-      )
-
-      getwd()
       nameans <- paste(
         "test",
         gsub(":", "", gsub(" ", "_", gsub("-", "", Sys.time()))),

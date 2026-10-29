@@ -249,8 +249,7 @@ laying <- function(dat, prog, result = TRUE, upperbound = NULL, lsc = lsc) {
     if (length(temp) >= 2) {
       beg_end[temp[length(temp)]] <- "E"
     }
-    ans <- list(period = ans, beg_end = beg_end)
-    ans
+    list(period = ans, beg_end = beg_end)
   } else {
     ans
   }

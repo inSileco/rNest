@@ -32,8 +32,7 @@ tk.single.nest <-
       if (temp != "") {
         assign(temp, ans, envir = .GlobalEnv)
       }
-      #print(y)
-      cat("\n", "\n", "\n", "\n")
+      cat_brs(4)
       print(ans)
       if (length(ans) == 3) {
         cat("\n")
@@ -52,7 +51,7 @@ tk.single.nest <-
         assign(temp, ans, envir = .GlobalEnv)
       }
       #print(y)
-      cat("\n", "\n", "\n", "\n")
+      cat_brs(4)
       print(ans)
       if (length(ans) == 3) {
         cat("\n")
@@ -71,10 +70,10 @@ tk.single.nest <-
         assign(temp, ans, envir = .GlobalEnv)
       }
       #print(y)
-      cat("\n", "\n", "\n", "\n")
+      cat_brs(4)
       print(ans)
       if (length(ans) == 3) {
-        cat("\n")
+        cat_brs()
         print(y)
       }
     }
