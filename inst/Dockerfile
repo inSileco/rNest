@@ -48,6 +48,7 @@ RUN echo 'options(repos = c(CRAN = "https://cran.r-project.org"))' \
     splancs_2.01-37 \
     svMisc_0.9-70 \
     RColorBrewer_1.1-2 \
+    yaml_2.1.13 \
     digest_0.6.8 \
     jsonlite_0.9.16 \
     mime_0.3 \
