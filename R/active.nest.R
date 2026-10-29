@@ -14,7 +14,7 @@ active.nest <- function(
   progress = TRUE,
   lsc = NULL,
   spgroup = NULL,
-  lang = "english",
+  lang = "en",
   fromtk = FALSE,
   ...
 ) {

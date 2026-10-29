@@ -8,7 +8,7 @@ Infers nest chronology from nest observations
 }
 \usage{
 active.nest(d, useprecalc = FALSE, error = FALSE, nparam = NULL, sp = FALSE, year = FALSE, layer = FALSE, region = FALSE, id = FALSE,
-int.choice = FALSE, locations = FALSE, progress = TRUE, lsc = NULL, spgroup = NULL, lang = "english", fromtk = FALSE ...)
+int.choice = FALSE, locations = FALSE, progress = TRUE, lsc = NULL, spgroup = NULL, lang = "en", fromtk = FALSE ...)
 }
 \arguments{
   \item{d}{
@@ -75,7 +75,7 @@ A named \code{list} with stages as names and each element of the \code{list} has
 A named \code{list} with group names as names. Each element of the \code{list} has to be a \code{vector} of characters with the species 4-letters AOU codes.
 }
   \item{lang}{
-Used within the tcltk interface to choose the language used. Default value \code{"english"}, otherwise \code{"fran?ais"} is used.
+Used within the tcltk interface to choose the language used. Default value \code{"en"}, otherwise \code{"fr"} is used.
 }
   \item{fromtk}{
 Used when the function is called within the tcltk interface to generate error and warning messages with \code{\link{tkmessageBox}}. Default value \code{FALSE}.
@@ -108,4 +108,3 @@ To be described
 \examples{
 To be described.
 }
-

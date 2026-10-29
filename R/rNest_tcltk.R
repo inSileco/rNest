@@ -1,4 +1,4 @@
-rNest_tcltk <- function(lang = "english") {
+rNest_tcltk <- function(lang = "en") {
   msg <- i18n("rNest_tcltk", lang)
   tkmessageBox(
     title = msg$warninglabl,

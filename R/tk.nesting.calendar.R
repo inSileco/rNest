@@ -1,7 +1,7 @@
 tk.nesting.calendar <- function(
   grid = FALSE,
   ecodistricts = ecodistricts,
-  lang = "english"
+  lang = "en"
 ) {
   list_lang <- i18n("tk.nesting.calendar", lang)
   rnest <- new.env()

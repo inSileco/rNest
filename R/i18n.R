@@ -1,7 +1,7 @@
-i18n <- function(section, lang = "english") {
+i18n <- function(section, lang = "en") {
   file <- system.file(
     "i18n",
-    if (lang == "english") "en.yml" else "fr.yml",
+    if (lang == "en") "en.yml" else "fr.yml",
     package = "rNest"
   )
   # old yaml versions do not mark the strings they read as UTF-8
