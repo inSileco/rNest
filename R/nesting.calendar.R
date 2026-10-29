@@ -15,8 +15,6 @@ nesting.calendar <- function(
   ),
   list_lang = NULL
 ) {
-  #browser()
-
   list_lang <- list_lang
   rnest <- new.env()
   assign("list_lang", list_lang, envir = rnest)
@@ -165,7 +163,7 @@ nesting.calendar <- function(
         max(sy) + (0.285 * upbox),
         ifelse(dates %in% c("05", "10", "15", "20", "25", "30"), dates, ""),
         cex = 0.8,
-        xpd = T,
+        xpd = TRUE,
         adj = c(0.5, 0.5)
       )
     }

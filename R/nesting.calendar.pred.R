@@ -8,7 +8,7 @@ nesting.calendar.pred <- function(
   dates = FALSE,
   groups = FALSE,
   type = "Species",
-  color.scale = TUE,
+  color.scale = TRUE,
   prop = c(0.0000000000, 0.05, 0.1, 0.2, 0.4, 0.6, 0.8, 1),
   color = c("white", brewer.pal(length(prop) - 3, "YlOrRd"), "darkred"),
   list_lang
@@ -100,9 +100,7 @@ nesting.calendar.pred <- function(
     length(sx) * 10,
     (length(sy) + 3.5 + 1 + ifelse(color.scale, 3, 0)) * 30
   )
-  #browser()
-  #print((length(sy)+3.5+1+ifelse(color.scale,3,0))*30)
-  #pdf("temp.pdf",length(sx)*10,(length(sy)+3.5+1+ifelse(color.scale,3,0))*30)
+
   #pdf("temp.pdf",17,10)
   #layout(matrix(c(rep(1,11*3),rep(c(2,3,4),5),rep(c(5,5,5),4)), 20, 3, byrow = TRUE))
   ## show the regions that have been allocated to each plot
@@ -165,8 +163,6 @@ nesting.calendar.pred <- function(
   for (j in sy) {
     for (i in sx[-length(sx)]) {
       val <- d[-1, j][i]
-      #val<-val-val2
-      #browser()
       colo <- if (val > 998) {
         "deepskyblue3"
       } else {

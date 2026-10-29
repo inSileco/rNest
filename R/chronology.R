@@ -14,7 +14,6 @@ chronology <- function(
   } #maybe not useful check in active.nest
   #if(!all(sort(dat$date)==dat$date)){return(c(NA,NA,"weird dates or visit id and dates not matching"))} # this thing here needs the visit_id column in the original data check nest 322498
   ### associating status code with stage code
-  #browser()
   if (is.null(lsc)) {
     lsc <- list(
       nest = c("AB", "FB", "MB", "PB", "N1", "N2", "N3", "N4", "NC", "NL"),
@@ -27,15 +26,11 @@ chronology <- function(
   if (!is.null(lsc)) {
     dat$stage_code <- sub_list(dat$status_code, lsc)
   }
-  ###
-
-  #browser()
 
   dat$stage_code <- id_stage(dat, nact = nact)
   #print(subset(dat,select=c(eggs,young,stage_code)))
   rownames(dat) <- 1:nrow(dat) # to create stage_code in dattest
   dattest <- dat # to have the stage codes for the test version
-  #print(dat)####################################################################################
 
   #setting the upperbound from nest observations
   if (any(dat$stage_code == "nest")) {
@@ -51,13 +46,10 @@ chronology <- function(
     upperbound <- NULL
   }
 
-  #browser()
-
   dat <- dat[!dat$stage_code %in% c("nest", "unknown"), ]
   if (nrow(dat) == 0) {
     return(c(NA, NA, "no eggs or young", NA, NA))
   }
-  #browser()
   ## info on nesting parameters
   if (
     !all(
@@ -93,7 +85,6 @@ chronology <- function(
       return(c(NA, NA, "some missing info", NA, NA))
     }
     rname <- rownames(dat) # keep rownames to fit with dattest cause merge renames ans sorts
-    #browser()
     dat <- merge(
       dat,
       species[spinfo, ],
@@ -125,10 +116,7 @@ chronology <- function(
   }
   #careful! adjust egg start for case where found in laying with uncompleted clutches and maybe give the modal clutch?
   dat$date <- as.Date(dat$date)
-  #browser()
   # from eggs observations, save only lines with status codes meaning laying
-
-  #browser()
 
   if (!is.null(lsc)) {
     # this to keep lines with laying status_codes in the eggs observations because they will be ordered first
@@ -221,8 +209,6 @@ chronology <- function(
     }
   }
 
-  #browser()
-
   if (dat$start[1] == 999) {
     egg_start <- prog
   }
@@ -251,7 +237,6 @@ chronology <- function(
 
   ######when nests are only considered active, maube put in id_stage fucntion
   #dattest$stage_code[which(dattest$eggs<0 & dattest$young<0 & dattest$stage_code!="unknown")]<-"active"
-  #browser()
   #egg stage id
   weggs <- which(dat$stage_code == "eggs")
   if (any(weggs) && !unknown) {
@@ -263,7 +248,6 @@ chronology <- function(
   dattest$stage_code[ifelse(!is.na(mat), TRUE, FALSE)] <- dat$stage_code[mat[
     !is.na(mat)
   ]]
-  #
   # gather observations
   layingdetect <- FALSE
   layobs <- if (unknown) {
@@ -289,8 +273,6 @@ chronology <- function(
   if (!is.null(layobs$period)) {
     layingdetect <- TRUE
   }
-
-  #browser()
 
   #fit incubation and laying
   winc <- which(names(layobs$period) == "incubation")
@@ -319,7 +301,6 @@ chronology <- function(
       layobs$beg_end <- layobs$beg_end[-winc]
     }
   }
-  #print("hello")
   #add probablement mettre ce passage dans la fonction stage_obs ferait plus de sens
   # pour ajouter une journ\u00e9e d'incubation avant l'atteinte du prog si L,incubation d\u00e9bute avant le dernier oeuf
   if (
@@ -359,8 +340,6 @@ chronology <- function(
     }
   }
 
-  #endadd
-
   if (!all(dat$stage_code == "active")) {
     lobs <- list(
       period = as.Date(
@@ -377,8 +356,6 @@ chronology <- function(
     lon <- length(lobs$period)
   }
   #modifying nesting parameters according to observations
-
-  #browser()
 
   # lay adjustement  #see ex6.txt and maybe modify here
   if (layingdetect) {
@@ -614,8 +591,6 @@ chronology <- function(
     c(rep("eggs", egg), rep("young", rear))
   }
 
-  #browser()
-
   if (layingdetect) {
     #potential problem with too long incubation+rearing period (too big gap between two observations, but no detection of too long period for any period)
     x1 <- lobs$period[1]
@@ -668,11 +643,6 @@ chronology <- function(
     #nbrear<-as.numeric(difftime(x2,x1))+1-lay-inc+overlap
     #if(nbrear<1){return(c(NA,NA,"possible renesting or inconsistent observations"))}
     #increar<-inc-overlap+nbrear
-    #print(lobs)
-    #print(increar)
-    #print(inc)
-    #print(overlap)
-    #print(nbrear)
     #inc<-ifelse(increar>inc+rear,round(increar*(inc/(inc+rear))),inc-overlap) #to make period augmentation proportional in both period
     #inc<-ifelse(increar>inc+rear,dispatch(inct=dat$incub[1],reart=dat$rearing[1],incmin=inc,rearmin=rear,increar=increar)[1],inc-overlap) # 2011-10-07 new version with dispatch
     #rear<-increar-inc
@@ -736,14 +706,11 @@ chronology <- function(
         if (ll < rear) {
           rear <- ll
         }
-        increar <- abs(as.numeric(difftime(
-          min(lobs$period),
-          max(lobs$period)
-        ))) +
+        increar <- abs(
+          as.numeric(difftime(min(lobs$period), max(lobs$period)))
+        ) +
           1 -
           ifelse(unknown, lay, 0)
-        #print(inc)
-        #print(rear)
         #if(!is.null(upperbound) & increar<(inc+rear)){
         #     inct<-dat$incub[1]
         #     reart<-dat$rearing[1]

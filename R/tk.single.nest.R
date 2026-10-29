@@ -23,7 +23,7 @@ tk.single.nest <-
     valeur3 <- tkentry(tt, width = 10, textvariable = tclVar(""))
     name1 <- tkentry(tt, width = 20, textvariable = tclVar(""))
     d <- nestwatch
-    #separator<-"============================================================================"
+
     # add button to print raw data or not
     but1 <- function() {
       y <- d[d$nest_id == sample(unique(d$nest_id), 1), ]
@@ -50,7 +50,6 @@ tk.single.nest <-
       if (temp != "") {
         assign(temp, ans, envir = .GlobalEnv)
       }
-      #print(y)
       cat_brs(4)
       print(ans)
       if (length(ans) == 3) {
@@ -69,9 +68,7 @@ tk.single.nest <-
       if (temp != "") {
         assign(temp, ans, envir = .GlobalEnv)
       }
-      #print(y)
       cat_brs(4)
-      print(ans)
       if (length(ans) == 3) {
         cat_brs()
         print(y)

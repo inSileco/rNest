@@ -361,7 +361,6 @@ tk.nesting.calendar <- function(
     } else {
       unlist(strsplit(ecodistrict1, ","))
     }
-    #browser()
     l <- list(
       sp = species1,
       year = years1,
@@ -540,7 +539,6 @@ tk.nesting.calendar <- function(
       )
       return()
     }
-    #browser()
     w <- ecodistricts@data[, "ecodistrict"] %in%
       specodistricts$ecodis[specodistricts[, which(
         names(specodistricts) == l$sp[1]
@@ -1053,7 +1051,6 @@ tk.nesting.calendar <- function(
         cex = 1.1
       )
       polid <- NULL
-      #browser()
       repeat {
         loc <- locator(1)
         if (is.null(loc)) {
@@ -1166,7 +1163,6 @@ tk.nesting.calendar <- function(
       pol <- getpoly(quiet = T)
       polygon(pol, lwd = 4, border = "darkgreen")
       #int<-inout(cbind(x=d$lon,y=d$lat),pol)
-      #browser()
       pol <- SpatialPolygons(
         list(Polygons(list(Polygon(pol[c(1:nrow(pol), 1), ])), ID = 1)),
         proj4string = CRS(proj4string(ecodistricts))

@@ -117,7 +117,7 @@ laying <- function(dat, prog, result = TRUE, upperbound = NULL, lsc = lsc) {
     }
     th <- th + 1
   }
-  #browser()
+
   if (!is.null(deb)) {
     ans <- seq.Date(median(as.Date(deb)), length.out = length(th), by = 1)
     names(ans) <- c(
@@ -133,9 +133,7 @@ laying <- function(dat, prog, result = TRUE, upperbound = NULL, lsc = lsc) {
     }
   } else {
     obs1 <- obs[1]
-    #if(length(obs)==1 & ifelse(any(w),1,0)==1){browser()}
     obs2 <- obs[length(obs) - ifelse(any(w) & length(obs) > 1, 1, 0)] # because fresh eggs make prog and laying together check nest_id 404015
-    #if(length(obs2)==0){browser()}
     difobs <- span(obs2, obs1)
     difth <- (as.numeric(names(obs2)) - as.numeric(names(obs1)) + 1) *
       dat$laying[1]
@@ -171,10 +169,6 @@ laying <- function(dat, prog, result = TRUE, upperbound = NULL, lsc = lsc) {
         nbmatch2,
         length(intersect(th2[names(th2) != as.character(prog)], obs))
       )
-      #print(deb2)
-      #print(nbmatch2)
-      #print(th2)
-      #cat("\n","\n")
 
       if (
         (length(th2) == 1 && length(deb2) == 1) ||

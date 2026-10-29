@@ -6,7 +6,7 @@ rNest_tcltk <- function(lang = "en") {
     icon = "info",
     type = "ok"
   )
-  cat("\n", "  ", msg$loadingmsglabl, "\n")
+  cat("\n  ", msg$loadingmsglabl, "\n")
   flush.console()
   data(nestwatch)
   data(nestingparameters)

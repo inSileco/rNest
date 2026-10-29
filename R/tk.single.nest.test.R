@@ -86,8 +86,7 @@ tk.single.nest.test <-
       tkgrid(get(paste("codes", i, sep = "")), row = i + 3, column = 3)
     }
     ff <- function() {
-      #browser()
-      eg <- sapply(paste("eggs", 1:n, sep = ""), function(i) {
+      eg <- sapply(paste("eggs", seq_len(n), sep = ""), function(i) {
         tclvalue(tkget(get(i)))
       })
       yo <- sapply(paste("young", 1:n, sep = ""), function(i) {

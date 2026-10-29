@@ -3,7 +3,7 @@ unknown_nbeggs <- function(dat) {
     list(dat = dat, unknown = FALSE)
   }
   if (nrow(dat) == 1 || all(dat$eggs %in% c(-1, 0) & dat$young %in% c(-1, 0))) {
-    return(list(dat = dat, unknown = T))
+    return(list(dat = dat, unknown = TRUE))
   }
   egg <- dat$eggs[dat$stage_code == "eggs"]
   if (length(egg) == 0 || all(egg >= 0)) {
@@ -15,12 +15,12 @@ unknown_nbeggs <- function(dat) {
   )
   if (all(egg == (-1))) {
     #dat$eggs[dat$stage_code=="eggs"]<-prog
-    return(list(dat = dat, unknown = T))
+    return(list(dat = dat, unknown = TRUE))
   }
 
   w <- which(dat$eggs > 0 & dat$stage_code == "eggs")[1]
   if (dat$eggs[w] == prog) {
-    return(list(dat = dat, unknown = T))
+    return(list(dat = dat, unknown = TRUE))
   } #(2011/10/03 this unknown was changed to F because of nest 1040923)
   if (dat$eggs[w] < prog) {
     ww <- match(-1, dat$eggs)

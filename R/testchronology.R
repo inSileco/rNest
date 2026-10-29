@@ -11,8 +11,8 @@ testchronology <- function(info, data, active, layingdetect = layingdetect) {
   dattest$date <- as.character(dattest$date) # dates in active can be represented by fractions so the same date can be represented by 2 different numbers so ar not equal so conversion to its character representation
   dat <- data[[1]]
   dat$date <- as.character(dat$date)
-  temp <- merge(dattest, add, by.x = "date", by.y = "DATE", all = T)
-  res2 <- merge(dat, add, by.x = "date", by.y = "DATE", all = T)
+  temp <- merge(dattest, add, by.x = "date", by.y = "DATE", all = TRUE)
+  res2 <- merge(dat, add, by.x = "date", by.y = "DATE", all = TRUE)
   res2 <- res2[, c(
     "species_code",
     "nest_id",
@@ -32,7 +32,6 @@ testchronology <- function(info, data, active, layingdetect = layingdetect) {
     "STAGE_OBS",
     "STAGE"
   )
-  #browser()
   inf <- ifelse(
     temp$STAGE == "laying",
     info$laying[1],
@@ -106,7 +105,6 @@ testchronology <- function(info, data, active, layingdetect = layingdetect) {
   w <- which(obs == "nest")
   lnest <- ifelse(any(w), jul[max(w)], NA)
   maxerror <- 999
-  #browser()
   if (!any(which(stage == "incubation"))) {
     # for nest 1733 without incubation period
     res$len_active <- ifelse(

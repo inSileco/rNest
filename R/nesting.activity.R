@@ -97,7 +97,7 @@ nesting.activity <- function(
     calendar <- rbind(nest, calendar)
   }
   if (by == "year") {
-    calendar <- calendar[, order(names(calendar), decreasing = T)]
+    calendar <- calendar[, order(names(calendar), decreasing = TRUE)]
   }
   calendar
 }

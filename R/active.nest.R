@@ -60,7 +60,6 @@ active.nest <- function(
   }
   if (is.character(sp)) {
     m <- match(sp, d$species_code)
-    #m<-ifelse(is.na(m),FALSE,TRUE)
     if (any(is.na(m))) {
       if (fromtk) {
         tkmessageBox(
@@ -128,7 +127,6 @@ active.nest <- function(
 
   ### info on nesting parameters
   #species<-read.csv("species2precocial.csv",header=T,stringsAsFactors=FALSE)
-
   #species<-nestingparameters
   if (!is.null(nparam)) {
     species <- nparam
@@ -172,7 +170,7 @@ active.nest <- function(
     }
   }
   #rname<-rownames(d) # see if warranted !! keep rownames to fit with dattest cause merge renames ans sorts
-  d <- merge(d, species, all.x = T, sort = FALSE)
+  d <- merge(d, species, all.x = TRUE, sort = FALSE)
   #rownames(d)<-rname # keep rownames
   info <- apply(
     d[, c("clutch", "cmin", "cmax", "incub", "start", "rearing", "laying")],
@@ -505,7 +503,6 @@ active.nest <- function(
   setkey(d, "nest_id")
   error_id <- NULL
   assign("error_id", error_id, envir = .GlobalEnv)
-  #browser()
   if (useprecalc) {
     res2 <- respre[, c(
       "initiation",
@@ -534,11 +531,7 @@ active.nest <- function(
           ans <- c(NA, NA, "nest generated an error message", NA, NA)
           assign("error_id", error_id, envir = .GlobalEnv)
         }
-        #traceback()
-        #stop(geterrmessage())
       }
-      #ans<-chronology(x,details=FALSE,test=FALSE,...)
-      #print(ans)
       res2[i, ] <- ans
       #res$initiation[i]<-ans[1]
       #res$fledging[i]<-ans[2]
@@ -556,7 +549,6 @@ active.nest <- function(
       stringsAsFactors = FALSE
     )
   }
-  #print(paste("error_id:",error_id))
   assign("error_id", error_id, envir = .GlobalEnv)
   res <- data.frame(res, res2, stringsAsFactors = FALSE)
   #if(!is.logical(year)){
