@@ -51,13 +51,18 @@
 #' @param lsc A named `list` with stages as names and corresponding status
 #' codes to be interpreted as such (ex: `list(laying=c("HR"),
 #' hatching=c("PI","CR"))`).
+#'
 #' @return Usually a `vector` (see argument `details`)
+#'
 #' @note In general, the [active.nest()] function should be used
 #' instead because it applies to several nests. The [chronology()]
 #' function is mostly there to simplify the code and is mostly intended to be
 #' used inside the [active.nest()] function.
+#'
 #' @author Francois Rousseu <francoisrousseu@@hotmail.com>
+#'
 #' @seealso [active.nest()], [rNest()]
+#'
 #' @export
 chronology <- function(
   dat,

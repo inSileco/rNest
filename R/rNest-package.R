@@ -7,13 +7,8 @@
 #' @importFrom graphics text
 #' @importFrom grDevices dev.new dev.off gray heat.colors x11
 #' @importFrom maps map
-#' @importFrom methods as slot `slot<-`
 #' @importFrom plyr . dlply llply
 #' @importFrom RColorBrewer brewer.pal
-#' @importFrom sp bbox coordinates `coordinates<-` CRS over plot Polygon
-#' @importFrom sp Polygons proj4string `proj4string<-` SpatialPolygons
-#' @importFrom sp SpatialPolygonsDataFrame
-#' @importFrom splancs getpoly inout
 #' @importFrom stats median
 #' @importFrom svMisc progress
 #' @importFrom tcltk tcl tclServiceMode tclvalue tclVar tkadd tkbind tkbutton

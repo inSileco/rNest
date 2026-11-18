@@ -32,10 +32,12 @@
 #' @param layer Name of a layer (ESRI shapefile) used to restrict the subset of
 #' nests studied to polygons contained in the layer. All nests are used when
 #' layer is set to `FALSE`, unless the argument `int.choice` is set
-#' to `TRUE`. Otherwise, a character string giving the name of a layer
+#' to `TRUE`. Otherwise, either an `sf` object of polygons (an `sp`
+#' `SpatialPolygonsDataFrame` is also accepted and converted with
+#' [sf::st_as_sf()]) or a character string giving the path of a layer
 #' (without the extension) containing the region of interest has to be given.
-#' The file has to be located in the R working directory along with other
-#' necessary files to interpret the layer. The shapefile has to be in
+#' A path without a directory refers to the R working directory, which must
+#' also contain the other files needed to interpret the layer. The layer has to be in
 #' geographic coordinates with the NAD83 system. Used in conjonction with
 #' `region` and `int.choice`.
 #' @param region Regions to which the nests should be restricted. The two
@@ -43,7 +45,7 @@
 #' of interest. When `int.choice` is `TRUE`, the name of the first
 #' region will be given to the selected polygon and a warning will be given if
 #' more than one region is specified. When `int.choice` is `FALSE`, a
-#' layer containing the names of the regions in its data slot has to be given,
+#' layer containing the names of the regions in its attribute table has to be given,
 #' otherwise, an error message will be returned.
 #' @param id Names of the columns in the attribute table of the shapefile to be
 #' used to create the regions of interest. A character `vector` with the
@@ -218,8 +220,6 @@ active.nest <- function(
   }
 
   ### info on nesting parameters
-  #species<-read.csv("species2precocial.csv",header=T,stringsAsFactors=FALSE)
-  #species<-nestingparameters
   if (!is.null(nparam)) {
     species <- nparam
   } else {
@@ -261,7 +261,7 @@ active.nest <- function(
       stop(msg$no_species_in_nparam)
     }
   }
-  #rname<-rownames(d) # see if warranted !! keep rownames to fit with dattest cause merge renames ans sorts
+
   d <- merge(d, species, all.x = TRUE, sort = FALSE)
   #rownames(d)<-rname # keep rownames
   info <- apply(
@@ -292,7 +292,6 @@ active.nest <- function(
     )
     d <- d[!info, ]
   }
-  ### associating status code with stage code
   if (is.null(lsc)) {
     lsc <- list(
       nest = c("AB", "FB", "MB", "PB", "N1", "N2", "N3", "N4", "NC", "NL"),
@@ -332,43 +331,38 @@ active.nest <- function(
     }
     if (!int.choice) {
       if (!is.logical(layer)) {
-        if (is.character(layer)) {
-          arg <- breakshapepath(layer)
-          reg <- read_layer(dsn = arg[1], layer = arg[2])
-        }
-        if (inherits(layer, "SpatialPolygonsDataFrame")) {
-          reg <- layer
-        }
+        reg <- as_layer(layer)
+        att <- sf::st_drop_geometry(reg)
         if (!is.logical(id) && length(id) > 1) {
-          slot(reg, "data") <- slot(reg, "data")[, id, drop = FALSE]
+          att <- att[, id, drop = FALSE]
           newatt <- paste(id, collapse = "_")
-          slot(reg, "data") <- data.frame(
-            newatt = apply(slot(reg, "data"), 1, paste, collapse = "_"),
+          att <- data.frame(
+            newatt = apply(att, 1, paste, collapse = "_"),
             stringsAsFactors = FALSE
           )
         } else {
           if (is.logical(id)) {
-            slot(reg, "data") <- slot(reg, "data")[, 1, drop = FALSE]
-            if (any(is.na(slot(reg, "data")[, 1]))) {
+            att <- att[, 1, drop = FALSE]
+            if (any(is.na(att[, 1]))) {
               if (fromtk) {
                 tkmessageBox(
                   title = "",
                   message = paste(
                     msg$na_attribute_labels,
-                    names(slot(reg, "data"))[1]
+                    names(att)[1]
                   ),
                   icon = "info",
                   type = "ok"
                 )
               }
               warning(
-                paste(msg$na_attribute_labels, names(slot(reg, "data"))[1]),
+                paste(msg$na_attribute_labels, names(att)[1]),
                 immediate. = TRUE
               )
             }
           } else {
-            slot(reg, "data") <- slot(reg, "data")[, id, drop = FALSE]
-            if (any(is.na(slot(reg, "data")[, 1]))) {
+            att <- att[, id, drop = FALSE]
+            if (any(is.na(att[, 1]))) {
               if (fromtk) {
                 tkmessageBox(
                   title = "",
@@ -381,10 +375,11 @@ active.nest <- function(
             }
           }
         }
-        x <- d
-        coordinates(x) = cbind(x$lon, x$lat, stringsAsFactors = FALSE)
-        proj4string(x) <- CRS(proj4string(reg))
-        spa <- over(x, reg)
+        spa <- att[
+          first_hit(layer_points(d$lon, d$lat, reg), reg),
+          ,
+          drop = FALSE
+        ]
         if (is.factor(spa[, 1])) {
           spa[, 1] <- as.character(spa[, 1])
         } # sinon overlay convertit tou en factor siboire!
@@ -454,20 +449,14 @@ active.nest <- function(
           cex = 1.1
         )
         points(d$lon, d$lat, pch = 16, col = "red", cex = 0.6)
-        pol <- getpoly(quiet = TRUE)
+        pol <- draw_poly()
         polygon(pol, lwd = 4, border = "darkgreen")
       } else {
         # maybe here the region should be subsetted according to shapefile, region AND selection?
-        if (is.character(layer)) {
-          arg <- breakshapepath(layer)
-          reg <- read_layer(dsn = arg[1], layer = arg[2])
-        }
-        if (inherits(layer, "SpatialPolygonsDataFrame")) {
-          reg <- layer
-        }
+        reg <- as_layer(layer)
         x11()
         par(mar = c(2, 0, 0, 0))
-        plot(reg)
+        plot_layer(reg)
         if (zoom) {
           mtext(
             msg$zoom_instructions,
@@ -477,16 +466,10 @@ active.nest <- function(
             cex = 1.1
           )
           points(d$lon, d$lat, pch = 16, col = "red", cex = 0.6)
-          pol <- getpoly(quiet = TRUE)
-          pol <- SpatialPolygons(
-            list(Polygons(list(Polygon(pol[c(1:nrow(pol), 1), ])), ID = 1)),
-            proj4string = CRS(proj4string(layer))
-          )
-          plot(
-            reg,
-            xlim = range(bbox(pol)[1, ]),
-            ylim = range(bbox(pol)[2, ])
-          )
+          pol <- draw_poly()
+          if (nrow(pol) >= 2) {
+            plot_layer(reg, xlim = range(pol[, 1]), ylim = range(pol[, 2]))
+          }
         }
         mtext(
           msg$select_instructions,
@@ -496,10 +479,10 @@ active.nest <- function(
           cex = 1.1
         )
         points(d$lon, d$lat, pch = 16, col = "red", cex = 0.6)
-        pol <- getpoly(quiet = TRUE)
+        pol <- draw_poly()
         polygon(pol, lwd = 4, border = "darkgreen")
       }
-      int <- inout(cbind(x = d$lon, y = d$lat), pol)
+      int <- in_polygon(d$lon, d$lat, pol)
       d <- cbind(
         d,
         region = rep(msg$selected_region, nrow(d)),
@@ -537,7 +520,7 @@ active.nest <- function(
       points(d$lon, d$lat, pch = 16, col = "red", cex = 0.6)
     } #maybe remove or adapt?
     if (locations & !int.choice) {
-      plot(reg)
+      plot_layer(reg)
       points(d$lon, d$lat, pch = 16, col = "red", cex = 0.6)
     } #maybe remove or adapt?
   }

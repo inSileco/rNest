@@ -6,12 +6,10 @@ id_stage <- function(dat, nact = nact) {
   st <- "1nest"
   for (i in 1:nrow(dat)) {
     if (dat$eggs[i] < 0 && dat$young[i] < 0) {
-      ############ rajout
       st <- c(st, "0active")
       next
     }
     if (any(st == "6unknown")) {
-      ############ rajout
       st <- c(st, rep("6unknown", nrow(dat) + 1 - length(st)))
       break
     }
@@ -66,7 +64,6 @@ id_stage <- function(dat, nact = nact) {
       }
     }
   }
-  #############
 
   if (nact && any(dat$eggs < 0 & dat$young < 0)) {
     wact <- which(dat$eggs < 0 & dat$young < 0 & st[-1] != "6unknown") + 1

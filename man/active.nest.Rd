@@ -60,10 +60,12 @@ given will be included.}
 \item{layer}{Name of a layer (ESRI shapefile) used to restrict the subset of
 nests studied to polygons contained in the layer. All nests are used when
 layer is set to \code{FALSE}, unless the argument \code{int.choice} is set
-to \code{TRUE}. Otherwise, a character string giving the name of a layer
+to \code{TRUE}. Otherwise, either an \code{sf} object of polygons (an \code{sp}
+\code{SpatialPolygonsDataFrame} is also accepted and converted with
+\code{\link[sf:st_as_sf]{sf::st_as_sf()}}) or a character string giving the path of a layer
 (without the extension) containing the region of interest has to be given.
-The file has to be located in the R working directory along with other
-necessary files to interpret the layer. The shapefile has to be in
+A path without a directory refers to the R working directory, which must
+also contain the other files needed to interpret the layer. The layer has to be in
 geographic coordinates with the NAD83 system. Used in conjonction with
 \code{region} and \code{int.choice}.}
 
@@ -72,7 +74,7 @@ possible values are \code{FALSE} or a \code{vector} of the names of regions
 of interest. When \code{int.choice} is \code{TRUE}, the name of the first
 region will be given to the selected polygon and a warning will be given if
 more than one region is specified. When \code{int.choice} is \code{FALSE}, a
-layer containing the names of the regions in its data slot has to be given,
+layer containing the names of the regions in its attribute table has to be given,
 otherwise, an error message will be returned.}
 
 \item{id}{Names of the columns in the attribute table of the shapefile to be

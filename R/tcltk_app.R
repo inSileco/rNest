@@ -52,39 +52,7 @@ rNest_tcltk <- function(lang = "en") {
   data(ecodistrictscsv, package = "rNest")
   data(predictions, package = "rNest")
   data(specodistricts, package = "rNest")
-  x <- dlply(ecodistrictscsv, .(group), function(i) {
-    Polygon(i[c(nrow(i), 1:nrow(i)), 1:2], hole = i$hole[1])
-  })
-  x <- sapply(unique(ecodistrictscsv$id), function(i) {
-    res <- x[
-      names(x) %in% ecodistrictscsv$group[which(ecodistrictscsv$id == i)]
-    ]
-    Polygons(res, ID = i)
-  })
-  dat <- ecodistrictscsv[match(names(x), ecodistrictscsv$id), ]
-  # stringsAsFactors = TRUE was the default before R 4.0
-  dat <- as.data.frame(
-    do.call("rbind", strsplit(dat$id, "_")),
-    stringsAsFactors = TRUE
-  )
-  names(dat) <- c(
-    "PROVINCE",
-    "ecodistrict",
-    "breeding_zone2",
-    "breeding_zone",
-    "provincesEN",
-    "provincesFR"
-  )
-  dat <- dat[, -1]
-  dat$ecodistrict <- as.numeric(as.character(dat$ecodistrict))
-  x <- SpatialPolygons(
-    x,
-    proj4string = CRS(
-      "+proj=longlat +datum=NAD83 +no_defs +ellps=GRS80 +towgs84=0,0,0"
-    )
-  )
-  x <- SpatialPolygonsDataFrame(x, data = dat, match.ID = FALSE)
-  ecodistricts <- x
+  ecodistricts <- build_ecodistricts(ecodistrictscsv)
   tk.nesting.calendar(ecodistricts = ecodistricts, lang = lang)
 }
 
@@ -250,7 +218,7 @@ tk.nesting.calendar <- function(
         list_lang$tkmb29[3],
         ifelse(
           !is.null(get("usershp", envir = rnest)),
-          proj4string(get("usershp", envir = rnest)),
+          sf::st_crs(get("usershp", envir = rnest))$input,
           ""
         )
       ))
@@ -1610,29 +1578,31 @@ app_mapnest <- function(app) {
   } else {
     pol <- app$ecodistricts
   }
-  xx <- x
-  coordinates(xx) <- cbind(xx$lon, xx$lat, stringsAsFactors = FALSE)
-  slot(pol, "data") <- data.frame(
+  pol <- sf::st_sf(
     reg = apply(
-      slot(pol, "data")[, l$id, drop = FALSE],
+      sf::st_drop_geometry(pol)[, l$id, drop = FALSE],
       1,
       paste,
       collapse = "_"
     ),
+    geometry = sf::st_geometry(pol),
     stringsAsFactors = FALSE
   )
   if (!identical(l$region, FALSE)) {
-    proj4string(xx) <- CRS(proj4string(pol))
-    reg <- over(xx, pol)
+    reg <- sf::st_drop_geometry(pol)[
+      first_hit(layer_points(x$lon, x$lat, pol), pol),
+      ,
+      drop = FALSE
+    ]
   }
   #reg<-reg[,l$id,drop=F]
   #ici il faudrait trouver le moyen d'int\u00e9grer le polygone trac\u00e9 pour r\u00e9duire le temps du overlay tr\u00e8s important
   #reg<-apply(reg,1,paste,collapse="_")
   x11()
   par(mar = c(2, 0, 0, 0))
-  plot(pol, col = ifelse(identical(l$region, FALSE), "white", "white"))
+  plot_layer(pol, col = "white")
   if (!identical(l$region, FALSE)) {
-    plot(pol[pol$reg %in% l$region, ], col = "lightgoldenrod", add = TRUE)
+    plot_layer(pol[pol$reg %in% l$region, ], col = "lightgoldenrod", add = TRUE)
     x <- cbind(x, reg = reg[, 1, drop = FALSE], stringsAsFactors = FALSE)
     x <- x[x$reg %in% l$region, ]
     if (nrow(x) == 0) {
@@ -1648,34 +1618,34 @@ app_mapeco <- function(app) {
   tkconfigure(app$tt, cursor = "watch")
   on.exit(tkconfigure(app$tt, cursor = "arrow"))
   l <- app_getopt(app)
-  w <- which(app$ecodistricts@data[, "ecodistrict"] %in% l$ecodistrict)
+  w <- which(app$ecodistricts$ecodistrict %in% l$ecodistrict)
   if (any(w)) {
     x11()
     par(mar = c(2, 0, 0, 0))
-    plot(app$ecodistricts[w, ], col = "white", border = "white")
+    plot_layer(app$ecodistricts[w, ], col = "white", border = "white")
   } else {
     tk_info(app$list_lang$tkmb5)
     return()
   }
-  plot(app$ecodistricts, add = TRUE)
+  plot_layer(app$ecodistricts, add = TRUE)
   if (!is.logical(l$layer)) {
     fshp <- get("usershp", envir = app$rnest)
-    plot(fshp, add = TRUE)
+    plot_layer(fshp, add = TRUE)
   }
-  plot(
+  plot_layer(
     app$ecodistricts[w, ],
     col = ifelse(
-      !(app$ecodistricts@data[w, "ecodistrict"] %in% predictions$ecodistrict),
+      !(app$ecodistricts$ecodistrict[w] %in% predictions$ecodistrict),
       gray(0.9),
       "lightgoldenrod"
     ),
     add = TRUE
   )
-  coo <- coordinates(app$ecodistricts[w, ])
+  coo <- label_points(app$ecodistricts[w, ])
   text(
     coo[, 1],
     coo[, 2],
-    app$ecodistricts@data[w, "ecodistrict"],
+    app$ecodistricts$ecodistrict[w],
     cex = 0.7,
     font = 2
   )
@@ -1690,16 +1660,16 @@ app_mapsp <- function(app) {
     tk_info(app$list_lang$tkmb6)
     return()
   }
-  w <- app$ecodistricts@data[, "ecodistrict"] %in%
+  w <- app$ecodistricts$ecodistrict %in%
     specodistricts$ecodis[specodistricts[, which(
       names(specodistricts) == l$sp[1]
     )]]
   if (any(w)) {
     x11()
     par(mar = c(2, 0, 0, 0))
-    plot(app$ecodistricts)
+    plot_layer(app$ecodistricts)
     mtext(l$sp[1], side = 1, outer = FALSE, font = 2, cex = 1.5)
-    plot(
+    plot_layer(
       app$ecodistricts[w, ],
       col = "lightgoldenrod",
       border = "black",
@@ -1707,7 +1677,7 @@ app_mapsp <- function(app) {
     )
     if (!is.logical(l$layer)) {
       fshp <- get("usershp", envir = app$rnest)
-      plot(fshp, add = TRUE)
+      plot_layer(fshp, add = TRUE)
     }
   } else {
     tk_info(app$list_lang$tkmb7)
@@ -1726,12 +1696,12 @@ app_mapspbackground <- function(app, warnsp = TRUE) {
   if (length(l$sp) > 1 && warnsp) {
     tk_info(app$list_lang$tkmb8)
   }
-  w <- app$ecodistricts@data[, "ecodistrict"] %in%
+  w <- app$ecodistricts$ecodistrict %in%
     specodistricts$ecodis[specodistricts[, which(
       names(specodistricts) == l$sp[1]
     )]]
   if (any(w)) {
-    plot(app$ecodistricts[w, ], col = "grey85", add = TRUE)
+    plot_layer(app$ecodistricts[w, ], col = "grey85", add = TRUE)
     return()
   }
 }
@@ -1950,15 +1920,15 @@ app_showshp <- function(app, info = "id") {
       "\n",
       "\n"
     )
-    print(head(fshp@data))
-    return(names(fshp@data))
+    print(head(sf::st_drop_geometry(fshp)))
+    return(names(sf::st_drop_geometry(fshp)))
   }
   if (info == "region") {
     l <- app_getopt(app)
     if (is.logical(l$id)) {
       stop(app$list_lang$tkmb23)
     }
-    temp <- fshp@data[, l$id, drop = FALSE]
+    temp <- sf::st_drop_geometry(fshp)[, l$id, drop = FALSE]
     temp <- apply(temp, 1, paste, collapse = "_")
     return(list(region = temp, shape = fshp))
   }
@@ -2062,7 +2032,7 @@ app_chooseregion <- function(app) {
     on.exit(tkconfigure(app$tt, cursor = "arrow"))
     x11()
     par(mar = c(2, 0, 0, 0))
-    plot(ll$shape)
+    plot_layer(ll$shape)
     l <- app_getopt(app)
     if (l$zoom) {
       mtext(
@@ -2072,16 +2042,10 @@ app_chooseregion <- function(app) {
         font = 2,
         cex = 1.1
       )
-      pol <- getpoly(quiet = TRUE)
-      pol <- SpatialPolygons(list(Polygons(
-        list(Polygon(pol[c(1:nrow(pol), 1), ])),
-        ID = 1
-      )))
-      plot(
-        ll$shape,
-        xlim = range(bbox(pol)[1, ]),
-        ylim = range(bbox(pol)[2, ])
-      )
+      pol <- draw_poly()
+      if (nrow(pol) >= 2) {
+        plot_layer(ll$shape, xlim = range(pol[, 1]), ylim = range(pol[, 2]))
+      }
     }
     mtext(
       app$list_lang$tkmb25,
@@ -2096,15 +2060,10 @@ app_chooseregion <- function(app) {
       if (is.null(loc)) {
         break
       }
-      locx <- data.frame(x = loc$x, y = loc$y, stringsAsFactors = FALSE)
-      coordinates(locx) <- cbind(locx$x, locx$y)
-      proj4string(locx) <- CRS(proj4string(ll$shape))
-      temp <- over(ll$shape, locx, returnList = FALSE)
-      temp <- which(!is.na(temp[, 1]))
-      if (!any(temp)) {
+      temp <- first_hit(layer_points(loc$x, loc$y, ll$shape), ll$shape)
+      if (is.na(temp)) {
         next
       }
-      temp <- temp[1]
       w <- which(ll$region == ll$region[temp])
       if (all(w %in% polid)) {
         polid <- polid[!polid %in% w]
@@ -2113,7 +2072,7 @@ app_chooseregion <- function(app) {
         polid <- c(polid, w)
         couleur <- "lightgoldenrod"
       }
-      plot(ll$shape[w, ], add = TRUE, col = couleur)
+      plot_layer(ll$shape[w, ], add = TRUE, col = couleur)
     }
     polid <- sort(unique(polid))
     x <- paste(unique(ll$region[polid]), collapse = ",")
@@ -2156,7 +2115,7 @@ app_chooseecodistrict <- function(app) {
   l <- app_getopt(app)
   x11()
   par(mar = c(2, 0, 0, 0))
-  plot(app$ecodistricts)
+  plot_layer(app$ecodistricts)
   warnsp <- TRUE
   if (l$backsp) {
     app_mapspbackground(app, warnsp = TRUE)
@@ -2164,7 +2123,7 @@ app_chooseecodistrict <- function(app) {
   }
   if (!is.logical(l$layer)) {
     fshp <- get("usershp", envir = app$rnest)
-    plot(fshp, add = TRUE)
+    plot_layer(fshp, add = TRUE)
   }
   if (l$zoom) {
     mtext(
@@ -2174,22 +2133,16 @@ app_chooseecodistrict <- function(app) {
       font = 2,
       cex = 1.1
     )
-    pol <- getpoly(quiet = TRUE)
-    pol <- SpatialPolygons(
-      list(Polygons(list(Polygon(pol[c(1:nrow(pol), 1), ])), ID = 1)),
-      proj4string = CRS(proj4string(app$ecodistricts))
-    )
-    plot(
-      app$ecodistricts,
-      xlim = range(bbox(pol)[1, ]),
-      ylim = range(bbox(pol)[2, ])
-    )
+    pol <- draw_poly()
+    if (nrow(pol) >= 2) {
+      plot_layer(app$ecodistricts, xlim = range(pol[, 1]), ylim = range(pol[, 2]))
+    }
   }
   if (l$backsp) {
     app_mapspbackground(app, warnsp = warnsp)
   }
   if (exists("fshp")) {
-    plot(fshp, add = TRUE)
+    plot_layer(fshp, add = TRUE)
   }
   if (l$int.choice) {
     mtext(
@@ -2199,18 +2152,18 @@ app_chooseecodistrict <- function(app) {
       font = 2,
       cex = 1.1
     )
-    pol <- getpoly(quiet = TRUE)
-    polygon(pol, lwd = 4, border = "darkgreen")
-    pol <- SpatialPolygons(
-      list(Polygons(list(Polygon(pol[c(1:nrow(pol), 1), ])), ID = 1)),
-      proj4string = CRS(proj4string(app$ecodistricts))
-    )
-    o <- over(pol, app$ecodistricts, returnList = TRUE)
-    plot(app$ecodistricts[o[[1]], ], add = TRUE, col = "lightgoldenrod")
-    if (exists("fshp")) {
-      plot(fshp, add = TRUE)
+    pol <- draw_poly()
+    if (nrow(pol) < 3) {
+      return(invisible())
     }
-    plot(pol, lwd = 4, border = "darkgreen", add = TRUE)
+    polygon(pol, lwd = 4, border = "darkgreen")
+    pol <- poly_from_xy(pol, crs = sf::st_crs(app$ecodistricts))
+    o <- list(intersecting(pol, app$ecodistricts))
+    plot_layer(app$ecodistricts[o[[1]], ], add = TRUE, col = "lightgoldenrod")
+    if (exists("fshp")) {
+      plot_layer(fshp, add = TRUE)
+    }
+    plot_layer(pol, lwd = 4, border = "darkgreen", add = TRUE)
     x <- paste(
       sort(unique(app$ecodistricts$ecodistrict[o[[1]]])),
       collapse = ","
@@ -2231,13 +2184,10 @@ app_chooseecodistrict <- function(app) {
       if (is.null(loc)) {
         break
       }
-      locx <- data.frame(x = loc$x, y = loc$y, stringsAsFactors = FALSE)
-      coordinates(locx) <- cbind(locx$x, locx$y)
-      proj4string(locx) <- CRS(proj4string(app$ecodistricts))
-      temp <- over(locx, app$ecodistricts, returnList = FALSE)[,
-        "ecodistrict",
-        drop = TRUE
-      ]
+      temp <- app$ecodistricts$ecodistrict[first_hit(
+        layer_points(loc$x, loc$y, app$ecodistricts),
+        app$ecodistricts
+      )]
       if (is.na(temp)) {
         next
       }
@@ -2249,10 +2199,10 @@ app_chooseecodistrict <- function(app) {
         polid <- c(polid, w)
         couleur <- "lightgoldenrod"
       }
-      plot(app$ecodistricts[w, ], add = TRUE, col = couleur)
+      plot_layer(app$ecodistricts[w, ], add = TRUE, col = couleur)
     }
     if (exists("fshp")) {
-      plot(fshp, add = TRUE)
+      plot_layer(fshp, add = TRUE)
     }
     polid <- sort(unique(polid))
     x <- paste(unique(app$ecodistricts$ecodistrict[polid]), collapse = ",")

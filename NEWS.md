@@ -1,3 +1,17 @@
+# rNest (development version)
+
+* sp is no longer a dependency: spatial layers are handled with sf from end to
+  end. `active.nest(layer = )` takes an `sf` object or a path to a shapefile;
+  an sp `SpatialPolygonsDataFrame` is still accepted and converted with
+  `sf::st_as_sf()`. Nests are assigned to the same regions as before (planar
+  point-in-polygon, first matching polygon).
+* splancs is no longer a dependency either (it depends on sp): polygons drawn
+  with `int.choice = TRUE` are read with `locator()`, and the nests inside them
+  are found with the same nonzero winding rule as `splancs::inout()`. rNest no
+  longer installs sp.
+
+
+
 # rNest 1.0.0
 
 rNest is now maintained by inSileco. The original package by Francois Rousseu

@@ -15,10 +15,61 @@ breakshapepath <- function(path) {
 }
 
 
-# Reads a layer of polygons as a SpatialPolygonsDataFrame, as
-# rgdal::readOGR() did (text columns as factors, like readOGR on R 3.2).
+# Reads a layer of polygons as an sf object, with text columns as factors,
+# as rgdal::readOGR() did on R 3.2.
 read_layer <- function(dsn, layer) {
-  as(sf::st_read(dsn, layer, stringsAsFactors = TRUE), "Spatial")
+  sf::st_read(dsn, layer, stringsAsFactors = TRUE, quiet = TRUE)
+}
+
+
+# Returns a layer as an sf object: a path to a shapefile is read, an sp object
+# (Spatial*DataFrame) is converted, and an sf object is returned as is.
+as_layer <- function(layer) {
+  if (is.character(layer)) {
+    arg <- breakshapepath(layer)
+    layer <- read_layer(dsn = arg[1], layer = arg[2])
+  }
+  if (inherits(layer, "Spatial")) {
+    layer <- sf::st_as_sf(layer)
+  }
+  if (!inherits(layer, "sf")) {
+    stop("`layer` must be a path to a shapefile or an sf object.")
+  }
+  layer
+}
+
+
+# Index of the first polygon of `polys` that contains each point of `pts`
+# (NA if none), as sp::over() did. Planar geometry is used (no s2), as sp did
+# for coordinates in longitude/latitude.
+first_hit <- function(pts, polys) {
+  s2 <- suppressMessages(sf::sf_use_s2(FALSE))
+  on.exit(suppressMessages(sf::sf_use_s2(s2)))
+  hit <- suppressMessages(sf::st_intersects(pts, sf::st_geometry(polys)))
+  vapply(hit, function(i) if (length(i)) i[1L] else NA_integer_, integer(1))
+}
+
+
+# Points (sf) from x and y coordinates, in the coordinate system of `layer`.
+layer_points <- function(x, y, layer) {
+  sf::st_sfc(
+    lapply(seq_along(x), function(i) sf::st_point(c(x[i], y[i]))),
+    crs = sf::st_crs(layer)
+  )
+}
+
+
+# Polygon (sfc) from a 2-column matrix of vertices, such as the one
+# draw_poly() returns; the ring is closed.
+poly_from_xy <- function(m, crs = sf::NA_crs_) {
+  m <- as.matrix(m[, 1:2])
+  sf::st_sfc(sf::st_polygon(list(m[c(seq_len(nrow(m)), 1), ])), crs = crs)
+}
+
+
+# Plots the geometry of a layer (sf or sfc), without its attributes.
+plot_layer <- function(x, ...) {
+  plot(sf::st_geometry(x), ...)
 }
 
 
@@ -185,4 +236,113 @@ sub_list <- function(x, l) {
   names(l) <- namesl
   m <- match(x, l)
   names(l)[m]
+}
+
+
+# Builds the layer of ecodistricts (sf, NAD83 longitude/latitude) from the
+# rings stored in ecodistrictscsv: one feature per id, made of the rings of its
+# groups, each hole being attached to the outer ring that contains it.
+build_ecodistricts <- function(csv) {
+  s2 <- suppressMessages(sf::sf_use_s2(FALSE))
+  on.exit(suppressMessages(sf::sf_use_s2(s2)))
+  ring <- function(r) {
+    m <- as.matrix(r[, 1:2])
+    dimnames(m) <- NULL
+    if (any(m[1, ] != m[nrow(m), ])) {
+      m <- rbind(m, m[1, ])
+    }
+    m
+  }
+  ids <- unique(csv$id)
+  rings <- split(csv, factor(csv$group, levels = unique(csv$group)))
+  ring_id <- vapply(rings, function(r) r$id[1], "")
+  geoms <- lapply(split(rings, factor(ring_id, levels = ids)), function(rs) {
+    hole <- vapply(rs, function(r) r$hole[1], NA)
+    outer <- lapply(rs[!hole], function(r) list(ring(r)))
+    if (any(hole)) {
+      outer_sfc <- sf::st_sfc(lapply(outer, sf::st_polygon))
+      for (r in rs[hole]) {
+        h <- ring(r)
+        w <- suppressMessages(
+          sf::st_intersects(sf::st_point(h[1, ]), outer_sfc)
+        )[[1]]
+        if (length(w)) outer[[w[1]]] <- c(outer[[w[1]]], list(h))
+      }
+    }
+    sf::st_multipolygon(outer)
+  })
+  dat <- csv[match(ids, csv$id), ]
+  # stringsAsFactors = TRUE was the default before R 4.0
+  dat <- as.data.frame(
+    do.call("rbind", strsplit(dat$id, "_")),
+    stringsAsFactors = TRUE
+  )
+  names(dat) <- c(
+    "PROVINCE",
+    "ecodistrict",
+    "breeding_zone2",
+    "breeding_zone",
+    "provincesEN",
+    "provincesFR"
+  )
+  dat <- dat[, -1]
+  dat$ecodistrict <- as.numeric(as.character(dat$ecodistrict))
+  sf::st_sf(dat, geometry = sf::st_sfc(unname(geoms), crs = 4269))
+}
+
+
+# Points at which to label the polygons of a layer (2-column matrix).
+label_points <- function(x) {
+  s2 <- suppressMessages(sf::sf_use_s2(FALSE))
+  on.exit(suppressMessages(sf::sf_use_s2(s2)))
+  suppressWarnings(sf::st_coordinates(
+    sf::st_point_on_surface(sf::st_geometry(x))
+  ))[, 1:2, drop = FALSE]
+}
+
+
+# Indices of the polygons of `polys` that intersect the geometry `g`.
+intersecting <- function(g, polys) {
+  s2 <- suppressMessages(sf::sf_use_s2(FALSE))
+  on.exit(suppressMessages(sf::sf_use_s2(s2)))
+  suppressMessages(sf::st_intersects(g, sf::st_geometry(polys)))[[1]]
+}
+
+
+# Lets the user draw a polygon on the current plot by clicking its vertices
+# (finish with the right button); the polygon is closed on the plot. Returns
+# the vertices as a 2-column matrix (no rows if none were given), as
+# splancs::getpoly(quiet = TRUE) did.
+draw_poly <- function() {
+  p <- locator(type = "l")
+  if (is.null(p)) {
+    return(matrix(numeric(0), ncol = 2))
+  }
+  lines(p$x[c(1, length(p$x))], p$y[c(1, length(p$y))])
+  cbind(p$x, p$y)
+}
+
+
+# Whether the points (x, y) are inside the polygon given by the 2-column
+# matrix of its vertices (closed or not), with the nonzero winding rule, as
+# splancs::inout() did. Works with self-intersecting polygons. Points exactly
+# on an edge may be classified differently than by splancs.
+in_polygon <- function(x, y, poly) {
+  wn <- integer(length(x))
+  n <- NROW(poly)
+  if (n < 3) {
+    return(wn != 0)
+  }
+  px <- poly[, 1]
+  py <- poly[, 2]
+  j <- n
+  for (i in seq_len(n)) {
+    # > 0 when (x, y) is left of the edge from vertex j to vertex i
+    side <- (px[i] - px[j]) * (y - py[j]) - (x - px[j]) * (py[i] - py[j])
+    wn <- wn +
+      (py[j] <= y & py[i] > y & side > 0) -
+      (py[j] > y & py[i] <= y & side < 0)
+    j <- i
+  }
+  wn != 0
 }
