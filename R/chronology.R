@@ -75,9 +75,10 @@ chronology <- function(
   lsc = NULL
 ) {
   dat <- dat[order(dat$nest_id, dat$date, dat$visit_id), ] # added 2012-11-06 because only using the chronology function gave different results than active.nest with unordered data (which is presumably done within active.nest)
-  if (is.data.table(dat)) {
+  # a tibble or a data.table is turned into a plain data.frame
+  if (!identical(class(dat), "data.frame")) {
     dat <- as.data.frame(dat)
-  } #maybe not useful check in active.nest
+  }
   #if(!all(sort(dat$date)==dat$date)){return(c(NA,NA,"weird dates or visit id and dates not matching"))} # this thing here needs the visit_id column in the original data check nest 322498
   ### associating status code with stage code
   if (is.null(lsc)) {
@@ -233,11 +234,9 @@ chronology <- function(
     !unknown |
       progobs > dat$clutch[1] |
       any(apply(
-        subset(
-          dat,
-          dat$stage_code %in% c("hatch", "young", "fledge"),
-          select = c(eggs, young)
-        ),
+        dat |>
+          dplyr::filter(.data$stage_code %in% c("hatch", "young", "fledge")) |>
+          dplyr::select("eggs", "young"),
         1,
         function(i) {
           all(i >= 0)

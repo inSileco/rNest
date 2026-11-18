@@ -9,6 +9,9 @@
   with `int.choice = TRUE` are read with `locator()`, and the nests inside them
   are found with the same nonzero winding rule as `splancs::inout()`. rNest no
   longer installs sp.
+* data.table and plyr are replaced by dplyr and tibble (with the native
+  pipe and the `.data` pronoun). Results are unchanged and are still returned
+  as data frames.
 
 
 

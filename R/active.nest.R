@@ -115,26 +115,24 @@ active.nest <- function(
 ) {
   msg <- i18n("active.nest", lang)
 
-  d <- subset(
-    d,
-    select = c(
-      nest_id,
-      species_code,
-      visit_id,
-      date,
-      eggs,
-      young,
-      status_code,
-      stage_code,
-      lat,
-      lon,
-      initiation,
-      fledging,
-      warning,
-      len_active,
-      span_error
-    )
-  )
+  d <- d |>
+    dplyr::select(dplyr::all_of(c(
+      "nest_id",
+      "species_code",
+      "visit_id",
+      "date",
+      "eggs",
+      "young",
+      "status_code",
+      "stage_code",
+      "lat",
+      "lon",
+      "initiation",
+      "fledging",
+      "warning",
+      "len_active",
+      "span_error"
+    )))
   if (is.character(sp)) {
     d <- d[d$species_code %in% sp, ]
   }
@@ -552,29 +550,26 @@ active.nest <- function(
   }
   d <- d[order(d$nest_id, d$date), ]
   id <- unique(d$nest_id)
-  respre <- unique(subset(
-    d,
-    select = c(
-      species_code,
-      nest_id,
-      region,
-      initiation,
-      fledging,
-      warning,
-      len_active,
-      span_error
-    )
-  ))
+  respre <- d |>
+    dplyr::select(dplyr::all_of(c(
+      "species_code",
+      "nest_id",
+      "region",
+      "initiation",
+      "fledging",
+      "warning",
+      "len_active",
+      "span_error"
+    ))) |>
+    unique() # not dplyr::distinct(), which drops the row names returned
   #res<-data.frame(sp=res$species_code,id=res$nest_id,region=res$region,initiation=as.Date(rep(NA,nrow(res))),fledging=as.Date(rep(NA,nrow(res))),warning=rep(NA,nrow(res)),stringsAsFactors=FALSE)
-  res <- data.frame(
+  res <- tibble::tibble(
     sp = respre$species_code,
     id = respre$nest_id,
-    region = respre$region,
-    stringsAsFactors = FALSE
+    region = respre$region
   )
   res2 <- matrix(NA, nrow = nrow(res), ncol = 5)
-  d <- data.table(d)
-  setkey(d, "nest_id")
+  by_nest <- split(d, d$nest_id)
   error_id <- NULL
   assign("error_id", error_id, envir = .GlobalEnv)
   if (useprecalc) {
@@ -587,8 +582,7 @@ active.nest <- function(
     )]
   } else {
     for (i in 1:nrow(res)) {
-      x <- d[J(res$id[i])]
-      #x<-d[d$nest_id==res$id[i],]
+      x <- by_nest[[as.character(res$id[i])]]
 
       if (
         class(try(
@@ -624,6 +618,7 @@ active.nest <- function(
     )
   }
   assign("error_id", error_id, envir = .GlobalEnv)
+  # back to a plain data.frame, which active.nest() returns
   res <- data.frame(res, res2, stringsAsFactors = FALSE)
   #if(!is.logical(year)){
   #     if(is.numeric(year)){

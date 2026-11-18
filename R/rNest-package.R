@@ -2,13 +2,12 @@
 "_PACKAGE"
 
 ## usethis namespace: start
-#' @importFrom data.table data.table is.data.table setkey
 #' @importFrom graphics lines locator mtext par points polygon rect strwidth
 #' @importFrom graphics text
 #' @importFrom grDevices dev.new dev.off gray heat.colors x11
 #' @importFrom maps map
-#' @importFrom plyr . dlply llply
 #' @importFrom RColorBrewer brewer.pal
+#' @importFrom rlang .data
 #' @importFrom stats median
 #' @importFrom svMisc progress
 #' @importFrom tcltk tcl tclServiceMode tclvalue tclVar tkadd tkbind tkbutton

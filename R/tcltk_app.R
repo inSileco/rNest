@@ -74,28 +74,26 @@ tk.nesting.calendar <- function(
   groups <- species_groups()
   d <- nestwatch
   sg <- birdgroupings
-  sg <- subset(
-    sg,
-    select = c(
-      Species_ID,
-      MBCA_2011_Final,
-      Species_gr1,
-      Species_gr2,
-      Habitat1,
-      Habitat2,
-      Habitat3,
-      Habitat4,
-      Nest_Type1,
-      Nest_Type2,
-      Nest_Type3,
-      model
-    )
-  )
+  sg <- sg |>
+    dplyr::select(dplyr::all_of(c(
+      "Species_ID",
+      "MBCA_2011_Final",
+      "Species_gr1",
+      "Species_gr2",
+      "Habitat1",
+      "Habitat2",
+      "Habitat3",
+      "Habitat4",
+      "Nest_Type1",
+      "Nest_Type2",
+      "Nest_Type3",
+      "model"
+    )))
 
-  x <- unique(unlist(subset(sg, select = -Species_ID)))
+  x <- unique(unlist(dplyr::select(sg, -"Species_ID")))
   x <- x[!is.na(x)]
 
-  sg2 <- subset(sg, select = Species_ID)
+  sg2 <- dplyr::select(sg, "Species_ID")
   for (i in names(groups)) {
     grp <- groups[[i]]
     for (j in seq_along(grp$values)) {
@@ -2530,7 +2528,7 @@ app_butmaskgroups <- function(app, n = 6, val = "1", remove = FALSE) {
 
 
 app_getcheckbut <- function(app, lg = app$lgroups) {
-  ans <- llply(names(lg), function(i) {
+  lapply(stats::setNames(nm = names(lg)), \(i) {
     res <- paste(i, lg[[i]], sep = "_")
     res <- sapply(res, function(j) {
       as.logical(as.numeric(tclvalue(get(
@@ -2540,8 +2538,6 @@ app_getcheckbut <- function(app, lg = app$lgroups) {
     })
     res
   })
-  names(ans) <- names(lg)
-  ans
 }
 
 

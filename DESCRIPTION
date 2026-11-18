@@ -1,7 +1,7 @@
 Package: rNest
 Type: Package
 Title: Estimating Nesting Chronology and Breeding Phenology in Birds
-Version: 1.0.0.9000
+Version: 1.0.0.9001
 Date: 2026-11-18
 Authors@R:
     c(
@@ -25,17 +25,18 @@ Authors@R:
     )
 Depends: R (>= 4.2.0)
 Imports:
-    data.table,
+    dplyr,
     grDevices,
     graphics,
     mapdata,
     maps,
-    plyr,
     RColorBrewer,
+    rlang,
     sf,
     stats,
     svMisc,
     tcltk,
+    tibble,
     utils,
     yaml
 Suggests:

@@ -30,18 +30,8 @@ nesting.pred <- function(predictions, ecodistricts, groups, order.by = "") {
       if (nrow(x) == 0) {
         next
       }
-      a1 <- lapply(
-        dlply(x[x[, "type"] == "initiation", ], .(ecodistrict)),
-        function(k) {
-          c(nrow(k), calendarprop(k, column = "jul"))
-        }
-      )
-      a2 <- lapply(
-        dlply(x[x[, "type"] == "fledging", ], .(ecodistrict)),
-        function(k) {
-          c(nrow(k), calendarprop(k, column = "jul"))
-        }
-      )
+      a1 <- x |> dplyr::filter(.data$type == "initiation") |> split_props()
+      a2 <- x |> dplyr::filter(.data$type == "fledging") |> split_props()
       a <- as.data.frame(matrix(
         do.call("c", a1) - do.call("c", a2),
         nrow = 366
@@ -80,4 +70,12 @@ nesting.pred <- function(predictions, ecodistricts, groups, order.by = "") {
     )]
   }
   cal
+}
+
+
+# For each ecodistrict of the predicted nests x: the number of nests followed
+# by the proportion of nests whose date is passed, for each day of the year.
+split_props <- function(x) {
+  split(x, x$ecodistrict) |>
+    lapply(\(k) c(nrow(k), calendarprop(k, column = "jul")))
 }
