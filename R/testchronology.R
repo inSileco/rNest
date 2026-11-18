@@ -51,7 +51,8 @@ testchronology <- function(info, data, active, layingdetect = layingdetect) {
   )
   seq <- rep(NA, nrow(temp))
   seq[!is.na(temp$STAGE)] <- seqtemp
-  res <- cbind(temp, inf, seq)
+  # stringsAsFactors = TRUE was the default before R 4.0
+  res <- cbind(temp, inf, seq, stringsAsFactors = TRUE)
   res <- res[, c(
     "species_code",
     "nest_id",

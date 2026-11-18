@@ -64,9 +64,9 @@ nesting.calendar.pred <- function(
   sx <- 1:x
   y <- ncol(d)
   sy <- y:2
-  windows(
-    length(sx) * 10,
-    (length(sy) + 3.5 + 1 + ifelse(color.scale, 3, 0)) * 30
+  calendar_device(
+    width = length(sx) * 10,
+    height = (length(sy) + 3.5 + 1 + ifelse(color.scale, 3, 0)) * 30
   )
   #windows(17,10)
   par(mai = c(0, 0, 0, 0), mar = c(0, 0, 0, 0))
@@ -96,9 +96,9 @@ nesting.calendar.pred <- function(
     1) *
     (-1.5)
   dev.off()
-  windows(
-    length(sx) * 10,
-    (length(sy) + 3.5 + 1 + ifelse(color.scale, 3, 0)) * 30
+  calendar_device(
+    width = length(sx) * 10,
+    height = (length(sy) + 3.5 + 1 + ifelse(color.scale, 3, 0)) * 30
   )
 
   #pdf("temp.pdf",17,10)
@@ -138,7 +138,7 @@ nesting.calendar.pred <- function(
       paste(names(d)[i], "  (", d[1, i], ") ", sep = ""),
       adj = c(0.5, 0.4),
       cex = 0.8,
-      xpd = TRUERUE,
+      xpd = TRUE,
       font = 2
     )
   }

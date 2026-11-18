@@ -1,7 +1,7 @@
 # Run rNest on R 3.2.0, with devtools.
 #
 # Build from the package root:
-#   docker build -f inst/Dockerfile -t rnest .
+#   docker build -f inst/old_results/Dockerfile -t rnest .
 #
 # The build runs the test suite in tests/ and fails if a test fails.
 #

@@ -1,3 +1,96 @@
+#' A Function to Infer Nesting Chronology from Nest Observations to Several
+#' Nests
+#'
+#' Infers nest chronology from nest observations
+#'
+#' Details of the algorithm are described in the Rnest manual.
+#'
+#' @param d A `data.frame` containing observations for one or several
+#' nests. An object of class `data.frame` with column names?: nest_id,
+#' species_code, date, eggs, young and optionally status_code, lon and lat.
+#' @param useprecalc When used with the `nestwatch` database,
+#' precalculated data can be used to speed up the process whent set to
+#' `TRUE`.
+#' @param error When set to `TRUE`, nest ids generating an error (either
+#' due to erroneous data or a bug in Rnest) will be displayed.
+#' @param nparam A `data.frame` containing nesting parameters for the
+#' species. An object of class `data.frame` with column names?:
+#' species_code, cmin, cmax, clutch, laying, start, incub and rearing.
+#' @param sp A set of species for which the nesting chronology has to be
+#' inferred. All species are included when the argument is set to `FALSE`.
+#' Otherwise, a `vector` with the species code has to be given.
+#' @param year Used to subset nests to be included based on their date of
+#' initiation. All nests are included when the argument is set to `FALSE`.
+#' Otherwise, either a `vector` containing dates (in character format) or
+#' years (in numeric/integer format) to be included. Years and dates given can
+#' precede or exceed values observed in the database. When the nesting
+#' chronology of a nest encompasses two years and years are given as an
+#' argument, it will be included if its date of initiation corresponds to a
+#' year given in the subset. If the argument is a set of dates, nests for which
+#' either the initiation or the fledging date correspond to one of the dates
+#' given will be included.
+#' @param layer Name of a layer (ESRI shapefile) used to restrict the subset of
+#' nests studied to polygons contained in the layer. All nests are used when
+#' layer is set to `FALSE`, unless the argument `int.choice` is set
+#' to `TRUE`. Otherwise, a character string giving the name of a layer
+#' (without the extension) containing the region of interest has to be given.
+#' The file has to be located in the R working directory along with other
+#' necessary files to interpret the layer. The shapefile has to be in
+#' geographic coordinates with the NAD83 system. Used in conjonction with
+#' `region` and `int.choice`.
+#' @param region Regions to which the nests should be restricted. The two
+#' possible values are `FALSE` or a `vector` of the names of regions
+#' of interest. When `int.choice` is `TRUE`, the name of the first
+#' region will be given to the selected polygon and a warning will be given if
+#' more than one region is specified. When `int.choice` is `FALSE`, a
+#' layer containing the names of the regions in its data slot has to be given,
+#' otherwise, an error message will be returned.
+#' @param id Names of the columns in the attribute table of the shapefile to be
+#' used to create the regions of interest. A character `vector` with the
+#' names of columns in the attribute table. When set to `FALSE`, the first
+#' column is used to describe the regions.
+#' @param int.choice Let's the user draw a polygon containing the region of
+#' interest. When set to `TRUE`, the user is asked to draw a polygon in
+#' the graphic device. If a layer is specified, the polygon is drawn in a plot
+#' showing the layer. If layer is set to `FALSE`, a world map is plotted
+#' and the user is asked for a polygon. The first 4 clicks on the graphic
+#' device will be used to rescale the map to get a greater accuracy in the
+#' drawing of the polygon.
+#' @param zoom Used when `int.choice` is `TRUE` and a layer is given.
+#' When set to `TRUE`, the user first draws a polygon around the area to
+#' zoom in on, then draws the region of interest.
+#' @param locations Used to map the locations of the nests within the region
+#' studied. When set to `TRUE`, nest locations contained in the regions of
+#' interest are plotted.
+#' @param progress Displays the progression of the function (number of nests
+#' for which the chronology has been estimated). The progression is displayed
+#' when progress is set to `TRUE`. This argument uses the function
+#' [svMisc::progress()] from the svMisc package.
+#' @param lsc A named `list` with stages as names and each element of the
+#' `list` has to be status codes to be interpreted as such.
+#' @param spgroup A named `list` with group names as names. Each element
+#' of the `list` has to be a `vector` of characters with the species
+#' 4-letters AOU codes.
+#' @param lang Used within the tcltk interface to choose the language used.
+#' Default value `"en"`, otherwise `"fr"` is used.
+#' @param fromtk Used when the function is called within the tcltk interface to
+#' generate error and warning messages with [tcltk::tkmessageBox()]. Default
+#' value `FALSE`.
+#' @param ... Further arguments to be passed to the [chronology()]
+#' function.
+#' @return A [data.frame()] with the following columns:
+#' * `sp`: species 4-letters AOU code
+#' * `id`: nest id
+#' * `region`: region where the nest is found
+#' * `initiation`: estimated initiation date (character)
+#' * `fledging`: estimated fledging date or of departure from the nest date
+#'   (character)
+#' * `warning`: warning encountered when backcalculating
+#'
+#' @note To be described
+#' @author Francois Rousseu <francoisrousseu@@hotmail.com>
+#' @seealso [chronology()], [nesting.activity()]
+#' @export
 active.nest <- function(
   d,
   useprecalc = FALSE,
@@ -39,8 +132,7 @@ active.nest <- function(
       len_active,
       span_error
     )
-  ) #add-on to subet years, has to be modified it is temporary for bruno
-  #d<-d[,c("nest_id","species_code","lat","lon","status_code","visit_id","date","eggs","young","stage_code")]
+  )
   if (is.character(sp)) {
     d <- d[d$species_code %in% sp, ]
   }
@@ -71,7 +163,7 @@ active.nest <- function(
       }
       warning(
         paste(msg$species_not_found, sp[is.na(m)]),
-        call. = T,
+        call. = TRUE,
         immediate. = TRUE
       )
     }
@@ -119,7 +211,7 @@ active.nest <- function(
       }
       warning(
         paste(msg$species_not_found_years, sp[is.na(m)]),
-        call. = T,
+        call. = TRUE,
         immediate. = TRUE
       )
     }
@@ -242,7 +334,7 @@ active.nest <- function(
       if (!is.logical(layer)) {
         if (is.character(layer)) {
           arg <- breakshapepath(layer)
-          reg <- readOGR(dsn = arg[1], layer = arg[2])
+          reg <- read_layer(dsn = arg[1], layer = arg[2])
         }
         if (inherits(layer, "SpatialPolygonsDataFrame")) {
           reg <- layer
@@ -334,11 +426,10 @@ active.nest <- function(
     }
     if (int.choice) {
       if (is.logical(layer)) {
-        data(worldHiresMapEnv)
         par(mar = c(2, 0, 0, 0))
         map(
-          'worldHires',
-          fill = T,
+          "mapdata::worldHires",
+          fill = TRUE,
           bg = "cyan",
           col = "lightgoldenrod",
           xpd = FALSE
@@ -347,10 +438,10 @@ active.nest <- function(
         ran <- locator(4)
         par(mar = c(2, 0, 0, 0))
         map(
-          'worldHires',
+          "mapdata::worldHires",
           ylim = range(ran$y),
           xlim = range(ran$x),
-          fill = T,
+          fill = TRUE,
           bg = "cyan",
           col = "lightgoldenrod",
           xpd = FALSE
@@ -363,13 +454,13 @@ active.nest <- function(
           cex = 1.1
         )
         points(d$lon, d$lat, pch = 16, col = "red", cex = 0.6)
-        pol <- getpoly(quiet = T)
+        pol <- getpoly(quiet = TRUE)
         polygon(pol, lwd = 4, border = "darkgreen")
       } else {
         # maybe here the region should be subsetted according to shapefile, region AND selection?
         if (is.character(layer)) {
           arg <- breakshapepath(layer)
-          reg <- readOGR(dsn = arg[1], layer = arg[2])
+          reg <- read_layer(dsn = arg[1], layer = arg[2])
         }
         if (inherits(layer, "SpatialPolygonsDataFrame")) {
           reg <- layer
@@ -386,7 +477,7 @@ active.nest <- function(
             cex = 1.1
           )
           points(d$lon, d$lat, pch = 16, col = "red", cex = 0.6)
-          pol <- getpoly(quiet = T)
+          pol <- getpoly(quiet = TRUE)
           pol <- SpatialPolygons(
             list(Polygons(list(Polygon(pol[c(1:nrow(pol), 1), ])), ID = 1)),
             proj4string = CRS(proj4string(layer))
@@ -405,7 +496,7 @@ active.nest <- function(
           cex = 1.1
         )
         points(d$lon, d$lat, pch = 16, col = "red", cex = 0.6)
-        pol <- getpoly(quiet = T)
+        pol <- getpoly(quiet = TRUE)
         polygon(pol, lwd = 4, border = "darkgreen")
       }
       int <- inout(cbind(x = d$lon, y = d$lat), pol)

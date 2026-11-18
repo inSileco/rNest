@@ -1,0 +1,23 @@
+template:
+  bootstrap: 5
+
+reference:
+  - title: Nesting chronology
+    contents:
+      - chronology
+      - active.nest
+  - title: Breeding phenology
+    contents:
+      - nesting.activity
+      - nesting.calendar
+  - title: User interface
+    contents:
+      - rNest
+  - title: Data
+    contents:
+      - nestwatch
+      - nestingparameters
+      - birdgroupings
+      - ecodistrictscsv
+      - predictions
+      - specodistricts

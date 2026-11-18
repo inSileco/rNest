@@ -1,3 +1,46 @@
+#' Calculate the Proportion of Active Nests for a Set of Dates
+#'
+#' Calculate the proportion of active nests along the breeding season for a set
+#' of species, regions or years
+#'
+#' To be described
+#'
+#' @param dat A [data.frame()] containing observations for one or
+#' several nests or the output of the [active.nest()] function with
+#' column names : nest_id, species_code, date, eggs, young and optionally
+#' status_code, longitude and latitude.
+#' @param dates Restricts the range of dates for which the nesting activity is
+#' calculated. A `vector` of length 2 with the dates given as a character
+#' string of the in the mm-dd format (ex: `dates = c("04-01","09-01")`).
+#' @param groups Used to compute the nesting phenology for different group of
+#' species based on habitat, phylogeny, feeding guild, etc. A named `list`
+#' of character vectors with the species code and the group ids as names (ex:
+#' `list(warblers = c("COYE", "YWAR"), hawks = c("BAEA" , "GOEA"))`).
+#' Species that are not part of a group will be returned as usual. If a species
+#' is part of more than one group, an error message will be returned.
+#' @param by Used to compute the nesting phenology based on species, years or
+#' regions. The three types of output are `"sp"`, `"year"` or
+#' `"region"`.
+#' @param n Gives the number of nests used to compute the proportion of active
+#' nests. If set to `TRUE`, the first line of the resulting
+#' `data.frame` gives the number of nests used.
+#' @param chronology Does the nesting chronology needs to be determined first?
+#' When set to `TRUE`, the `dat` argument has to be a
+#' `data.frame` with nests observations. When set to `FALSE`, the
+#' `dat` argument is assumed to be the output of the
+#' [active.nest()] function.
+#' @param ... Further arguments to be passed to the [chronology()]
+#' or [active.nest()] function.
+#' @return A [data.frame()] with the first column named date and the
+#' remaining columns named with either the species code, year or regions used
+#' according to the `by` argument. The first line of the `data.frame`
+#' optionaly (see argument `n`) contains the number of nests available for
+#' the calculation.
+#' @note To be described
+#' @author Francois Rousseu <francoisrousseu@@hotmail.com>
+#' @seealso [active.nest()], [nesting.calendar()]
+#' @references To be described
+#' @export
 nesting.activity <- function(
   dat,
   dates = FALSE,

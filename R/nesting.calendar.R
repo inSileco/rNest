@@ -1,3 +1,49 @@
+#' Building Custom Nesting Calendars
+#'
+#' This function is used to obtain nesting calendars for specific regions,
+#' years, species and/or group of species
+#'
+#' To be described
+#'
+#' @param d A [data.frame()] of proportions of active nests on
+#' different dates or the output of the [nesting.activity()]
+#' function. The first column is named date with dates in the "mm-dd" format.
+#' Other columns are usually species, years or regions, but any name to
+#' describe the set of nests used is accepted. The first line contains the
+#' number of nests used to compute the proportions. The first element of the
+#' column date is the character expression `"nb_nest"`.
+#' @param sp Used to restrict the calendar to a set of species (or other
+#' groups). A character `vector` with column names found in the
+#' `data.frame`. Ignored when set to `FALSE`.
+#' @param cons The number of nest under which only the presence/absence of
+#' nesting activity will be depicted without a more precise description of the
+#' nesting phenology.
+#' @param colcons The color to be used when the nesting activity is only
+#' presence/absence. A color specified in anyway accepted by the graphical
+#' parameter `"col"` (see [graphics::par()]). Defaults to `"grey"`.
+#' @param dates Used to restrict the calendar to a range of dates. A character
+#' vector of length 2 with the range of dates desired in the "mm-dd" format
+#' (ex: `c("04-01","09-01")`).
+#' @param groups Used to label group of species in the calendar. A named
+#' `list` containing as element the groups of species and the group as
+#' names (ex: `list(group1=c("sp1","sp2"), group2=c("sp3" , "sp4"))`).
+#' @param type Used to label the calendar. Any character string (ex.
+#' `"Years", "Regions"`, etc.).
+#' @param color.scale Displays the color scale at the bottom of the calendar.
+#' When set to `FALSE`, the color scale is not displayed.
+#' @param prop Breaks used to display the different proportions. Any sequence
+#' of numbers in the \[0,1\] interval beginning with 0 and ending with 1.
+#' @param color Colors used for the different proportions. A vector of colors
+#' specified in anyway accepted by the graphical parameter `"col"` (see
+#' [graphics::par()]). The number of colors specified must be equal to the
+#' number of blocks given to the `prop` argument.
+#' @param list_lang Labels used by the tcltk interface, in English or French.
+#' When set to `NULL`, English month names are used.
+#' @return A [base::plot()] on the graphic device.
+#' @note To be described
+#' @author Francois Rousseu <francoisrousseu@@hotmail.com>
+#' @seealso [nesting.activity()]
+#' @export
 nesting.calendar <- function(
   d,
   sp = FALSE,
@@ -64,9 +110,9 @@ nesting.calendar <- function(
   sx <- 1:x
   y <- ncol(d)
   sy <- y:2
-  windows(
-    length(sx) * 10,
-    (length(sy) + 3.5 + 1 + ifelse(color.scale, 3, 0)) * 30
+  calendar_device(
+    width = length(sx) * 10,
+    height = (length(sy) + 3.5 + 1 + ifelse(color.scale, 3, 0)) * 30
   )
   par(mai = c(0, 0, 0, 0), mar = c(0, 0, 0, 0))
   plot(x, y, type = "n")
@@ -93,9 +139,9 @@ nesting.calendar <- function(
     1) *
     (-1.5)
   dev.off()
-  windows(
-    length(sx) * 10,
-    (length(sy) + 3.5 + 1 + ifelse(color.scale, 3, 0)) * 30
+  calendar_device(
+    width = length(sx) * 10,
+    height = (length(sy) + 3.5 + 1 + ifelse(color.scale, 3, 0)) * 30
   )
   par(mai = c(0, 0, 0, 0), mar = c(0, 0, 0, 0))
   plot(
@@ -187,8 +233,14 @@ nesting.calendar <- function(
     dates <- ifelse(dates %in% c("05", "10", "15", "20", "25"), dates, "")
     mo <- substr(d$date[i], 4, 5) == "01" || i %in% c(2, x)
     if (mo) {
-      lines(c(i - 1, i - 1), c(y, y + upbox), col = "black", lwd = 2, xpd = T)
-      lines(c(i - 1, i - 1), c(1, y), col = "black", lwd = 2, xpd = T)
+      lines(
+        c(i - 1, i - 1),
+        c(y, y + upbox),
+        col = "black",
+        lwd = 2,
+        xpd = TRUE
+      )
+      lines(c(i - 1, i - 1), c(1, y), col = "black", lwd = 2, xpd = TRUE)
     }
   }
   m <- unique(substr(d$date, 1, 2))

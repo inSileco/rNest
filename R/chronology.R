@@ -1,3 +1,64 @@
+#' Estimate Nesting Chronology from Nest Observations to a Single Nest
+#'
+#' Used to estimate the nesting chronology from observations to a single nest.
+#'
+#' When no nesting parameters are available ( `nparam = NULL` ), nesting
+#' parameters from the database [nestingparameters] can be used. In
+#' this case, the database has to be made available in the global environment
+#' by typing `data(nestingparameters)` in the console (see function
+#' [utils::data()]). The [rNest()] function will also make the
+#' nesting parameters available in the global environment.
+#'
+#' @param dat A [data.frame()] containing observations for a single
+#' nest with column names : nest_id, species_code, date, eggs, young and
+#' optionally status_code.
+#' @param details Modifies the output of the function to give either the range
+#' of dates for which the nest is active or the complete nesting sequence with
+#' the nesting stages on different dates as names. When set to `TRUE`,
+#' gives the complete nesting sequence.
+#' @param nparam A [data.frame()] containing nesting parameters for
+#' the species with column names : species_code, cmin, cmax, clutch, laying,
+#' start, incub and rearing.
+#' @param test Modifies the output of the function to give a `data.frame`
+#' facilitating the comparison between the observations, the nesting parameters
+#' and the estimation. When set to `TRUE`, the output is the test
+#' `data.frame`.
+#' @param minclutch If a single observation is made with a number of eggs
+#' inferior to the minimal clutch size, this argument determines if the nest
+#' will be considered in the laying stage with the mean clutch size or if the
+#' nest will be considered in the incubation stage with the observed number of
+#' eggs used as the clutch size. Whent set to `TRUE`, a single observation
+#' with a number of eggs below the minimum clutch size will be considered in
+#' the laying stage.
+#' @param rel.flex Determines the amount of variation that will be attributed
+#' to the incubation period when the length of the observed incubation+rearing
+#' period differ from the theoretical length. When set to `NULL`, the
+#' relative adjustement of the incubation and the rearing period will be
+#' proportional to their theoretical lengths. Otherwise, a `vector` of two
+#' proportions determining the amount of variation that will be attributed to
+#' the incubation period when the observed length of the incubation+rearing
+#' period is either longer or shorter than the theoretical one, respectively. A
+#' value of `rel.flex = c(0, 0)` attributes all the variation to the
+#' rearing period and fixes the length of incubation.
+#' @param nact Determines how observations of unknown number of eggs and young
+#' will be interpreted when estimating the nest chronology. When set to
+#' `TRUE`, observations reporting values of (-1, -1) for the number of
+#' eggs and young will be considered to represent an active nest containing
+#' either eggs, young or both and the complete chronology will be centered
+#' around these observations. When set to `FALSE`, values of (-1,-1) will
+#' be interpreted as indicative of the presence of both eggs and young in the
+#' nest.
+#' @param lsc A named `list` with stages as names and corresponding status
+#' codes to be interpreted as such (ex: `list(laying=c("HR"),
+#' hatching=c("PI","CR"))`).
+#' @return Usually a `vector` (see argument `details`)
+#' @note In general, the [active.nest()] function should be used
+#' instead because it applies to several nests. The [chronology()]
+#' function is mostly there to simplify the code and is mostly intended to be
+#' used inside the [active.nest()] function.
+#' @author Francois Rousseu <francoisrousseu@@hotmail.com>
+#' @seealso [active.nest()], [rNest()]
+#' @export
 chronology <- function(
   dat,
   details = FALSE,
@@ -57,7 +118,6 @@ chronology <- function(
         names(dat)
     )
   ) {
-    #print("11111111")
     #species<-read.csv("species2precocial.csv",header=T,stringsAsFactors=FALSE)
     if (!is.null(nparam)) {
       species <- nparam
@@ -102,7 +162,6 @@ chronology <- function(
     spinfo <- 1
   }
   unknown <- FALSE
-  #print(dat)
   if (any(c(dat$eggs, dat$young) < 0)) {
     if (all(c(dat$eggs, dat$young) %in% c(0, -1))) {
       unknown <- TRUE
@@ -132,7 +191,6 @@ chronology <- function(
     }
   }
 
-  #save only higher order observations
   ordre <- c("nest", "active", "eggs", "young", "hatch", "fledge")
   order_stage <- match(dat$stage_code, ordre)
   dat <- cbind(dat, order_stage, stringsAsFactors = FALSE)
@@ -218,18 +276,14 @@ chronology <- function(
   }
   if (dat$start[1] < 998) {
     egg_start <- min(dat$start[1], prog)
-  } #edit pour une BANO avec 1 de prog
-  #if(dat$start[1]==999){egg_start<-max(ifelse(dat$eggs==(-1),1,dat$eggs)+ifelse(dat$young==(-1),1,dat$young),na.rm=T)}
-  #if(dat$start[1]==998){egg_start<-max(ifelse(dat$eggs==(-1),1,dat$eggs)+ifelse(dat$young==(-1),1,dat$young),na.rm=T)-1}
-  #if(dat$start[1]<998){egg_start<-dat$start[1]}
+  }
+
   egg_start <- ifelse(egg_start <= 0, 1, egg_start)
   dat <- data.frame(
     dat,
     egg_start = rep(egg_start, nrow(dat)),
     stringsAsFactors = FALSE
   )
-  #if more than one visit in the same day, program here to keep the latest (or something else)
-  #maximum number of progeny
 
   lay <- (dat$egg_start[1] - 1) * dat$laying[1]
   inc <- dat$incub[1]

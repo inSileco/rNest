@@ -1,12 +1,54 @@
 Package: rNest
 Type: Package
 Title: Estimating Nesting Chronology and Breeding Phenology in Birds
-Version: 0.2.2
-Date: 2026-11-16
-Author: Francois Rousseu, Bruno Drolet
-Maintainer: Francois Rousseu <francoisrousseu@hotmail.com>
-Depends: tcltk, svMisc, splancs, mapdata, rgdal, maptools, data.table, sp, rgeos, plyr, RColorBrewer
-Imports: yaml
-Suggests: testthat
+Version: 0.2.2.9001
+Date: 2026-11-17
+Authors@R:
+    c(
+    person(given = "Kevin",
+           family = "Cazelles",
+           role = c("aut", "cre"),
+           email = "kevin.cazelles@insileco.io",
+           comment = c(ORCID = "0000-0001-6619-9874")
+        ),
+    person(
+        given = "Francois",
+        family = "Rousseu",
+        role = "aut",
+        email = "francoisrousseu@hotmail.com"
+    ),
+    person(
+        given = "Bruno",
+        family = "Drolet",
+        role = "aut"
+    )
+    )
+Depends: R (>= 4.2.0)
+Imports:
+    data.table,
+    grDevices,
+    graphics,
+    mapdata,
+    maps,
+    methods,
+    plyr,
+    RColorBrewer,
+    sf,
+    sp,
+    splancs,
+    stats,
+    svMisc,
+    tcltk,
+    utils,
+    yaml
+Suggests:
+    knitr,
+    rmarkdown,
+    testthat (>= 3.0.0)
+VignetteBuilder: knitr
 Description: Tools for estimating nesting chronology and describing breeding phenology in birds using nest observations.
-License: GPL 2.0
+License: MIT + file LICENSE
+Encoding: UTF-8
+Config/testthat/edition: 3
+Roxygen: list(markdown = TRUE)
+Config/roxygen2/version: 8.0.0

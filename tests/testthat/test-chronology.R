@@ -1,5 +1,3 @@
-context("chronology")
-
 test_that("chronology() matches the dates stored in nestwatch", {
   # nests without eggs or young are checked separately below
   for (i in unique(nw$nest_id[!is.na(nw$initiation)])) {
@@ -19,7 +17,7 @@ test_that("chronology() returns NA dates for nests without eggs or young", {
 
 test_that("chronology(test = TRUE) returns the day-by-day stages", {
   ans <- chronology(nw[nw$nest_id == 43359, ], nparam = np, test = TRUE)
-  expect_is(ans, "data.frame")
+  expect_s3_class(ans, "data.frame")
   expect_true(all(c("date", "STAGE", "nest_param") %in% names(ans)))
   expect_true("laying" %in% ans$STAGE)
 })

@@ -1,0 +1,111 @@
+---
+title: "Get started with rNest"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Get started with rNest}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(collapse = TRUE, comment = "#>")
+```
+
+rNest estimates the nesting chronology of birds, the dates when a nest was
+started and when the young left it, from a few visits to the nest. From these
+dates, it describes the breeding phenology of a set of nests: the share of
+nests that are active on each day of the season.
+
+```{r}
+library(rNest)
+```
+
+## Nest observations and nesting parameters
+
+rNest needs two tables. The first one holds the observations: one row per
+visit to a nest, with the nest id, the species (4-letter AOU code), the date,
+and the number of eggs and young seen. `nestwatch` is a small excerpt from the
+Project NestWatch database:
+
+```{r}
+data(nestwatch)
+nestwatch[1:5, c("nest_id", "species_code", "date", "eggs", "young")]
+```
+
+The second one gives the nesting parameters of each species: clutch size,
+length of laying, incubation and rearing, etc. `nestingparameters` holds them
+for the species in `nestwatch`:
+
+```{r}
+data(nestingparameters)
+nestingparameters[, c("species_code", "clutch", "laying", "incub", "rearing")]
+```
+
+## The chronology of one nest
+
+`chronology()` estimates the chronology of a single nest. Its first two values
+are the estimated initiation date (first egg) and fledging date:
+
+```{r}
+nest <- nestwatch[nestwatch$nest_id == 43359, ]
+chronology(nest, nparam = nestingparameters)[1:2]
+```
+
+## Many nests at once
+
+`active.nest()` does the same for every nest in a table. Nests can be
+selected by species (`sp`), year (`year`) or region (`layer`, `region`):
+
+```{r}
+nests <- active.nest(nestwatch, nparam = nestingparameters, progress = FALSE)
+nests[, c("sp", "id", "initiation", "fledging", "warning")]
+```
+
+Nests without eggs or young get no dates, and `warning` says why.
+
+## Breeding phenology
+
+`nesting.activity()` turns these dates into the proportion of nests active on
+each day, here by species. The first row gives the number of nests used:
+
+```{r, results = "hide"}
+activity <- nesting.activity(nests)
+```
+
+```{r}
+activity[c(1, 40:45), ]
+```
+
+Use `by = "year"` or `by = "region"` to group nests by year or region instead.
+
+`nesting.calendar()` draws these proportions as a calendar:
+
+```{r, include = FALSE}
+# nesting.calendar() opens its own plot device, which knitr can't capture:
+# draw it into a png file and include that file below.
+calendar_png <- knitr::fig_path("png")
+dir.create(dirname(calendar_png), recursive = TRUE, showWarnings = FALSE)
+old <- options(device = function(width, height, ...) {
+  png(calendar_png, width = width, height = height, units = "in", res = 96)
+})
+```
+
+```{r, results = "hide"}
+nesting.calendar(activity)
+```
+
+```{r, echo = FALSE, out.width = "100%"}
+invisible(dev.off())
+options(old)
+knitr::include_graphics(calendar_png)
+```
+
+## The interface
+
+`rNest()` opens the rNest user interface (`rNid()` opens it in French). It
+gives access to the same tools with menus and maps, and adds nesting calendars
+predicted by ecodistrict across Canada.
+
+```{r, eval = FALSE}
+rNest()
+```

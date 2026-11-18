@@ -15,6 +15,21 @@ breakshapepath <- function(path) {
 }
 
 
+# Reads a layer of polygons as a SpatialPolygonsDataFrame, as
+# rgdal::readOGR() did (text columns as factors, like readOGR on R 3.2).
+read_layer <- function(dsn, layer) {
+  as(sf::st_read(dsn, layer, stringsAsFactors = TRUE), "Spatial")
+}
+
+
+# Opens a plot device for a calendar. The requested size can be hundreds of
+# inches; windows() clamped such a window to the screen, so the width and the
+# height are each capped, at max_width and max_height inches.
+calendar_device <- function(width, height, max_width = 16, max_height = 10) {
+  dev.new(width = min(width, max_width), height = min(height, max_height))
+}
+
+
 calendarprop <- function(x, jul = 1:365, column) {
   dates <- x[, column] # change quantile !!!
   r <- range(dates, na.rm = TRUE)

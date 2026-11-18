@@ -1,0 +1,67 @@
+---
+title: "Development of an updated Nesting Calendar Tool for Canadian Migratory Birds"
+author:
+  - name: Kevin Cazelles
+  - affiliation: inSileco
+date: last-modified
+lang: en
+format:
+  insileco-html: default
+  insileco-typst: default
+bibliography: references.bib
+---
+
+
+Environment and Climate Change Canada (ECCC) is responsible for the conservation and management of migratory birds in Canada. The Migratory Bird Convention Act and the Migratory Birds Regulations, 2022 (hereafter, the Regulations) provide the regulatory framework to enact migratory bird conservation in Canada. The Regulations protect the nests of all migratory birds when they contain a bird or viable egg (i.e., during the nesting period). Activities that result in vegetation clearing during the nesting season are likely to contravene the prohibitions on destroying or disturbing nests laid out in the Regulations, unless these activities are authorized under the authority of a permit.
+
+Incidental take is the inadvertent, yet predictable, killing or harming of migratory birds or the destruction or removal of their nests and eggs during activities that are otherwise conducted legally. There are currently no means (i.e., permit) of lifting the prohibitions laid out in the Regulations for activities that cause incidental take. However, ECCC recognizes the need to provide regulatory certainty to proponents that are conducting activities that may result in incidental take in certain scenarios, in a way that benefits migratory birds. Accordingly, ECCC is committed to developing an incidental take regime and is in the process of evaluating the various factors that are likely to impact the risk of causing incidental take, including the location and timing of the activity with regards to the nesting period.
+
+ECCC created a tool to help predict the periods during which migratory birds are likely to be nesting in a particular geographic area. This tool is used by stakeholders to support project planning and risk-management decisions regarding the impact of their activities on breeding birds. The tool has also been used by NGOs, such as the Nesting Calendar Query Tool currently published by Birds Canada, to inform the public about the breeding periods of migratory birds.
+
+The existing nesting calendars are predictions derived from a set of models developed for studying the nesting phenology of bird species breeding in Canada developed by ECCC biologists (Rousseu and Drolet, 2015) using historical nest-record data (from the NestWatch project; Bird Studies Canada, 2013). The nesting periods for 311 species were modelled, including 264 migratory bird species.
+
+Since the original nesting-calendar models were developed, substantial additional sources of breeding information have become available. These may include recent breeding bird atlas data, eBird observations, point-count information, rare-species forms, and additional nest records from the project NestWatch (> 2013). Many of these datasets contain dated breeding-evidence codes that will provide information about nesting phenology. Additionally, ECCC would need to develop nesting calendars for all 401 migratory bird species currently recognized under the MBCA.
+
+ECCC aims to assess and update the existing nesting calendars for 1) all species Canadian migratory birds individually and 2) for species combined, to identify core breeding periods across Canada’s landscape for all migratory birds to help inform the future incidental take regulatory regime. The updated calendar should incorporate new nest records from all the relevant sources of data identified by ECCC.
+
+
+## Objective
+
+The objective of this project is to develop an updated, scientifically defensible, spatially explicit, nesting calendar for identifying the migratory birds nesting periods  across Canada. **This contract will lead to the production of an updated nesting calendar for all migratory birds nesting in Canada**. The contractor will also evaluate the existing methodology used to produce the nesting calendar and update the existing models and code to implement a **more up to date prediction model to predict the nesting phenology of the migratory birds nesting across Canada**.
+
+
+# rNest package
+
+5 goals behing frt version of rNest tool:
+
+> The first objective was to program a set of algorithms that would automatically process the hundreds of thousands of field observations contained in the nests records within the Project NestWatch database (Bird Studies Canada). A procedure was developed to reconstruct the most likely nest chronology with the greatest possible accuracy.
+
+> The second objective was to make use of the estimated nest chronologies to develop models that would predict the nesting phenology of birds across Canada. The mean annual temperature (MAT) was the main predictor variable for the timing of nesting. The slope of the relationship between the MAT and nesting phenology was determined by the migratory strategy, the tendency to breed early or late, and the capacity to lay multiple clutches, while the intercept (or height) of prediction curves was determined by species
+
+> The third objective was to determine whether the use of the backcalculation procedure was justified and whether it leads to biases when predicting nesting phenology, and to provide estimates of uncertainty concerning the predictions.
+
+> The fourth objective was to consolidate the results of the first two objectives within a multispecies analysis to propose regional nesting calendars that would help determine regionally relevant periods during which nesting is likely to occur, and to provide a general portrait of the nesting phenology of federally protected bird species across Canada.
+
+
+> The fifth and final objective was to provide a compendium of all the information that was used for, and generated by, the analysis of the Project NestWatch database. This is presented in the form of species-specific accounts.
+
+- include data
+- algorithm to
+
+-
+
+> It provides species-specific predictions of the nesting phenology of 311 bird species (71 % of those breeding in Canada), outlining the timing and intensity of nesting. The use of a standardized method applied to all regions enables predictions to be made for boreal and Arctic regions.
+
+
+
+
+> Although, basic biological information is available in the scientific literature for certain species or regions, it is not available for the whole of Canada in a common format.
+
+
+Backcalculation algorithm developed wir dR
+
+
+# Database
+
+
+# New database

@@ -1,8 +1,38 @@
 # The rNest Tcl/Tk user interface: entry points rNest()/rNid(), the main
 # window tk.nesting.calendar(), the single-nest windows and their helpers.
 
+#' Calling rNest's User Interface
+#'
+#' These functions call the user tcltk interface as well as the nestwatch data,
+#' nesting parameters and bird grouping characteristics
+#'
+#' The function `rNest` is used to call the english interface and
+#' `rNid` is used to call the french interface.
+#'
+#' Information on how to use the interface is partly contained in the different
+#' menus and buttons.
+#'
+#' When using the `rNest` function, the NestWatch data
+#' ([nestwatch]) is called first, then nesting parameters
+#' ([nestingparameters]) and bird groupings
+#' ([birdgroupings]) and finally the user interface appears with
+#' its different menus. Both functions use the `rNest_tcltk` function
+#' internal to the package.
+#'
+#' @return Opens the tcltk interface of rNest
+#' @note Currently, a bug in tcltk causes R and the user interface to crash
+#' when regions are selected interactively on a plot and the plot is
+#' prematurely closed before ending the selection. To prevent the crash, always
+#' end any selection by using the right button of the mouse and choosing the
+#' stop option displayed. Similarly, interrupting a long calculation is
+#' currently causing the same type of problem.
+#' @author Francois Rousseu <francoisrousseu@@hotmail.com>
+#' @seealso To be described
+#' @export
 rNest <- function() rNest_tcltk(lang = "en")
 
+#' @rdname rNest
+#' @export
 rNid <- function() rNest_tcltk(lang = "fr")
 
 
@@ -16,12 +46,12 @@ rNest_tcltk <- function(lang = "en") {
   )
   cat("\n  ", msg$loadingmsglabl, "\n")
   flush.console()
-  data(nestwatch)
-  data(nestingparameters)
-  data(birdgroupings)
-  data(ecodistrictscsv)
-  data(predictions)
-  data(specodistricts)
+  data(nestwatch, package = "rNest")
+  data(nestingparameters, package = "rNest")
+  data(birdgroupings, package = "rNest")
+  data(ecodistrictscsv, package = "rNest")
+  data(predictions, package = "rNest")
+  data(specodistricts, package = "rNest")
   x <- dlply(ecodistrictscsv, .(group), function(i) {
     Polygon(i[c(nrow(i), 1:nrow(i)), 1:2], hole = i$hole[1])
   })
@@ -32,7 +62,11 @@ rNest_tcltk <- function(lang = "en") {
     Polygons(res, ID = i)
   })
   dat <- ecodistrictscsv[match(names(x), ecodistrictscsv$id), ]
-  dat <- as.data.frame(do.call("rbind", strsplit(dat$id, "_")))
+  # stringsAsFactors = TRUE was the default before R 4.0
+  dat <- as.data.frame(
+    do.call("rbind", strsplit(dat$id, "_")),
+    stringsAsFactors = TRUE
+  )
   names(dat) <- c(
     "PROVINCE",
     "ecodistrict",
@@ -110,10 +144,18 @@ tk.nesting.calendar <- function(
   sg <- sg2
   rm(grp)
 
-  tclServiceMode(FALSE)
+  old_mode <- tclServiceMode(FALSE)
+  on.exit(tclServiceMode(old_mode), add = TRUE)
   tt <- tktoplevel()
-  tkwm.geometry(tt, "950x600")
-  tcl("wm", "attributes", tt, topmost = TRUE)
+  # no fixed geometry: let Tk size the window from its content (fonts scale
+  # with the screen DPI), but never larger than the screen
+  tcl(
+    "wm",
+    "maxsize",
+    tt,
+    tclvalue(tcl("winfo", "screenwidth", tt)),
+    tclvalue(tcl("winfo", "screenheight", tt))
+  )
   for (i in 0:36) {
     tkgrid.rowconfigure(tt, i, weight = 1, minsize = 12)
   }
@@ -476,7 +518,6 @@ tk.nesting.calendar <- function(
     text = list_lang$ugroupslabl
   )
 
-
   ll <- sg$Species_ID[sg$Species_ID %in% unique(d$species_code)]
 
   scr <- tkscrollbar(tt, repeatinterval = 5, command = function(...) {
@@ -537,10 +578,10 @@ tk.nesting.calendar <- function(
           r <- pos
           s <- length(lgroups[[i]])
           function() {
-            tclServiceMode(FALSE)
+            old_mode <- tclServiceMode(FALSE)
+            on.exit(tclServiceMode(old_mode), add = TRUE)
             app_butmask(app, i, r, s, predict = get("predict", envir = rnest))
             app_relistsp(app, sg, lgroups)
-            tclServiceMode(TRUE)
           }
         })
       ),
@@ -610,10 +651,10 @@ tk.nesting.calendar <- function(
         command = local({
           i <- i
           function() {
-            tclServiceMode(FALSE)
+            old_mode <- tclServiceMode(FALSE)
+            on.exit(tclServiceMode(old_mode), add = TRUE)
             app_butmaskgroups(app, i)
             app_relistsp(app, sg, lgroups)
-            tclServiceMode(TRUE)
           }
         })
       ),
@@ -633,10 +674,10 @@ tk.nesting.calendar <- function(
         command = local({
           i <- i
           function() {
-            tclServiceMode(FALSE)
+            old_mode <- tclServiceMode(FALSE)
+            on.exit(tclServiceMode(old_mode), add = TRUE)
             app_butmaskgroups(app, i, val = "0")
             app_relistsp(app, sg, lgroups)
-            tclServiceMode(TRUE)
           }
         })
       ),
@@ -1318,32 +1359,30 @@ tk.nesting.calendar <- function(
     tt,
     text = list_lang$butpredlabl,
     bg = "grey55",
-    width = 115,
     bg = "lightblue",
     fg = "red",
     font = fontmode,
     command = function() {
-      tclServiceMode(FALSE)
+      old_mode <- tclServiceMode(FALSE)
+      on.exit(tclServiceMode(old_mode), add = TRUE)
       app_widget(app, predict = FALSE)
       app_rejected(app, fromobsbut = FALSE)
       app_relistsp(app, sg, lgroups)
-      tclServiceMode(TRUE)
     }
   )
   butobs <- tkbutton(
     tt,
     text = list_lang$butobslabl,
     bg = "grey55",
-    width = 115,
     bg = "lightgreen",
     fg = "red",
     font = fontmode,
     command = function() {
-      tclServiceMode(FALSE)
+      old_mode <- tclServiceMode(FALSE)
+      on.exit(tclServiceMode(old_mode), add = TRUE)
       app_widget(app, predict = TRUE)
       app_rejected(app, fromobsbut = TRUE)
       app_relistsp(app, sg, lgroups)
-      tclServiceMode(TRUE)
     }
   )
 
@@ -1427,7 +1466,6 @@ tk.nesting.calendar <- function(
       }
     }
   }
-  tclServiceMode(TRUE)
   invisible(app)
 }
 
@@ -1462,7 +1500,7 @@ app_getopt <- function(app) {
       tkconfigure(app$tt, cursor = "watch")
       on.exit(tkconfigure(app$tt, cursor = "arrow"))
       arg <- breakshapepath(shp1)
-      usershp <- readOGR(dsn = arg[1], layer = arg[2])
+      usershp <- read_layer(dsn = arg[1], layer = arg[2])
       assign("usershp", usershp, envir = app$rnest)
     } else {
       assign("usershp", NULL, envir = app$rnest)
@@ -1576,7 +1614,7 @@ app_mapnest <- function(app) {
   coordinates(xx) <- cbind(xx$lon, xx$lat, stringsAsFactors = FALSE)
   slot(pol, "data") <- data.frame(
     reg = apply(
-      slot(pol, "data")[, l$id, drop = F],
+      slot(pol, "data")[, l$id, drop = FALSE],
       1,
       paste,
       collapse = "_"
@@ -1631,7 +1669,7 @@ app_mapeco <- function(app) {
       gray(0.9),
       "lightgoldenrod"
     ),
-    add = TRUERUE
+    add = TRUE
   )
   coo <- coordinates(app$ecodistricts[w, ])
   text(
@@ -1930,15 +1968,16 @@ app_showshp <- function(app, info = "id") {
 app_chooseshp <- function(app) {
   tkconfigure(app$tt, cursor = "watch")
   on.exit(tkconfigure(app$tt, cursor = "arrow"))
-  tcl("wm", "attributes", app$tt, topmost = FALSE)
-  x <- gsub("\\\\", "/", file.choose())
+  x <- choose_file(filters = matrix(c("Shapefile", ".shp"), ncol = 2))
+  if (is.null(x)) {
+    return(invisible())
+  }
   tkconfigure(app$shp, textvariable = tclVar(x))
   tkgrid(app$shp, row = 10, column = 1, sticky = "w") #adjust with final location row=5
   l <- app_getopt(app) # to load the shapefile and bring modifications to rnest envir
   #arg<-breakshapepath(x)
   #usershp<-readOGR(dsn=arg[1],layer=arg[2])
   #assign("usershp",usershp,envir=rnest)
-  tcl("wm", "attributes", app$tt, topmost = TRUE)
 }
 
 
@@ -1954,7 +1993,7 @@ app_choosesp <- function(app) {
 app_chooseid <- function(app) {
   ll <- app_showshp(app, info = "id")
   ttt <- tktoplevel()
-  tcl("wm", "attributes", ttt, topmost = TRUE)
+  tcl("wm", "transient", ttt, app$tt)
   tktitle(ttt) <- "Attributes"
   listid <- tklistbox(
     ttt,
@@ -1973,7 +2012,6 @@ app_chooseid <- function(app) {
     tkconfigure(app$id, textvariable = tclVar(x))
     tkgrid(app$id, row = 11, column = 1, sticky = "w")
     tkdestroy(ttt)
-    tcl("wm", "attributes", app$tt, topmost = TRUE)
   }
   listidbut <- tkbutton(
     ttt,
@@ -1997,7 +2035,7 @@ app_chooseid <- function(app) {
 app_chooseregion <- function(app) {
   ll <- app_showshp(app, info = "region")
   ttt <- tktoplevel()
-  tcl("wm", "attributes", ttt, topmost = TRUE)
+  tcl("wm", "transient", ttt, app$tt)
   tktitle(ttt) <- "Regions"
 
   choixderegion <- unique(ll$region) # car on veut conserver le nb total pour faciliter le subsettage
@@ -2018,7 +2056,6 @@ app_chooseregion <- function(app) {
     tkconfigure(app$region, textvariable = tclVar(x))
     tkgrid(app$region, row = 12, column = 1, sticky = "w")
     tkdestroy(ttt)
-    tcl("wm", "attributes", app$tt, topmost = TRUE)
   }
   mapchoice <- function() {
     tkconfigure(app$tt, cursor = "watch")
@@ -2076,14 +2113,13 @@ app_chooseregion <- function(app) {
         polid <- c(polid, w)
         couleur <- "lightgoldenrod"
       }
-      plot(ll$shape[w, ], add = T, col = couleur)
+      plot(ll$shape[w, ], add = TRUE, col = couleur)
     }
     polid <- sort(unique(polid))
     x <- paste(unique(ll$region[polid]), collapse = ",")
     tkconfigure(app$region, textvariable = tclVar(x))
     tkgrid(app$region, row = 12, column = 1, sticky = "w")
     tkdestroy(ttt)
-    tcl("wm", "attributes", app$tt, topmost = TRUE)
   }
   listregionbut <- tkbutton(
     ttt,
@@ -2138,7 +2174,7 @@ app_chooseecodistrict <- function(app) {
       font = 2,
       cex = 1.1
     )
-    pol <- getpoly(quiet = T)
+    pol <- getpoly(quiet = TRUE)
     pol <- SpatialPolygons(
       list(Polygons(list(Polygon(pol[c(1:nrow(pol), 1), ])), ID = 1)),
       proj4string = CRS(proj4string(app$ecodistricts))
@@ -2163,7 +2199,7 @@ app_chooseecodistrict <- function(app) {
       font = 2,
       cex = 1.1
     )
-    pol <- getpoly(quiet = T)
+    pol <- getpoly(quiet = TRUE)
     polygon(pol, lwd = 4, border = "darkgreen")
     pol <- SpatialPolygons(
       list(Polygons(list(Polygon(pol[c(1:nrow(pol), 1), ])), ID = 1)),
@@ -2174,7 +2210,7 @@ app_chooseecodistrict <- function(app) {
     if (exists("fshp")) {
       plot(fshp, add = TRUE)
     }
-    plot(pol, lwd = 4, border = "darkgreen", add = TRUERUE)
+    plot(pol, lwd = 4, border = "darkgreen", add = TRUE)
     x <- paste(
       sort(unique(app$ecodistricts$ecodistrict[o[[1]]])),
       collapse = ","
@@ -2280,7 +2316,8 @@ app_butmask <- function(
   remove = FALSE,
   predict = get("predict", envir = app$rnest)
 ) {
-  tclServiceMode(FALSE)
+  old_mode <- tclServiceMode(FALSE)
+  on.exit(tclServiceMode(old_mode), add = TRUE)
   if (remove) {
     tkgrid.remove(get(paste(names(app$lgroups)[n], "mask"), envir = app$rnest))
     for (j in 1:(length(app$lgroups[[n]]))) {
@@ -2388,7 +2425,6 @@ app_butmask <- function(
       sticky = "nws"
     )
   }
-  tclServiceMode(TRUE)
 }
 
 
@@ -2436,7 +2472,8 @@ app_rejected <- function(app, fromobsbut = FALSE) {
 
 
 app_butmaskgroups <- function(app, n = 6, val = "1", remove = FALSE) {
-  tclServiceMode(FALSE)
+  old_mode <- tclServiceMode(FALSE)
+  on.exit(tclServiceMode(old_mode), add = TRUE)
   pos <- 20
   co <- 9
   if (remove) {
@@ -2539,7 +2576,6 @@ app_butmaskgroups <- function(app, n = 6, val = "1", remove = FALSE) {
       )
     }
   }
-  tclServiceMode(TRUE)
 }
 
 
@@ -2565,7 +2601,8 @@ app_relistsp <- function(app, sg, lg) {
     tkdelete(app$listid, 0, "end")
     return()
   }
-  tclServiceMode(FALSE)
+  old_mode <- tclServiceMode(FALSE)
+  on.exit(tclServiceMode(old_mode), add = TRUE)
   temp <- list()
   for (i in 1:length(ans)) {
     temp[[i]] <- apply(
@@ -2591,7 +2628,6 @@ app_relistsp <- function(app, sg, lg) {
     }
     tkgrid(app$listid, row = 3, rowspan = 32, column = 4, sticky = "ns")
   }
-  tclServiceMode(TRUE)
 }
 
 
@@ -2712,7 +2748,10 @@ app_loaddata <- function(app) {
   }
 
   browse <- function(num) {
-    x <- gsub("\\\\", "/", file.choose())
+    x <- choose_file()
+    if (is.null(x)) {
+      return(invisible())
+    }
     tkconfigure(get(paste("ent", num, sep = "")), textvariable = tclVar(x))
     tkgrid(get(paste("ent", num, sep = "")), row = num * 2, column = 0)
   }
@@ -2851,7 +2890,7 @@ app_widget <- function(app, predict = FALSE) {
     tkgrid(tklabel(app$tt, text = ""), row = 35)
     tkgrid(tklabel(app$tt, text = "   "), row = 0, column = app$n + 8 + 1)
     tkgrid(app$groupq, row = 34, column = 6, sticky = "w")
-    tkgrid(app$butobs, column = 0, row = 36, columnspan = 100, sticky = "ns")
+    tkgrid(app$butobs, column = 0, row = 36, columnspan = 100, sticky = "we")
     #tkgrid(tklabel(tt,text=""),row=37)
     tkgrid.remove(app$butsp, app$butspq)
     tkgrid.remove(app$butpred)
@@ -2883,7 +2922,7 @@ app_widget <- function(app, predict = FALSE) {
     tkgrid(app$butspq, column = 2, row = 17)
     tkgrid(app$buteco, column = 0, row = 18, columnspan = 4)
     tkgrid(app$butecoq, column = 2, row = 18)
-    tkgrid(app$butpred, column = 0, row = 36, columnspan = 100, sticky = "ns")
+    tkgrid(app$butpred, column = 0, row = 36, columnspan = 100, sticky = "we")
     tkgrid.remove(app$butobs)
     tkgrid.remove(app$yearcal, app$spcal, app$regioncal)
     #l<-getopt()
@@ -2893,7 +2932,8 @@ app_widget <- function(app, predict = FALSE) {
 
 
 tk.single.nest <- function(list_lang) {
-  tclServiceMode(FALSE)
+  old_mode <- tclServiceMode(FALSE)
+  on.exit(tclServiceMode(old_mode), add = TRUE)
 
   tt <- tktoplevel()
   tktitle(tt) <- list_lang$titlesnlabl
@@ -2931,7 +2971,7 @@ tk.single.nest <- function(list_lang) {
       stop(list_lang$tkmb39)
     }
     y <- d[d$nest_id == sample(unique(d$nest_id[d$species_code == x]), 1), ]
-    ans <- chronology(y, test = T)
+    ans <- chronology(y, test = TRUE)
     temp <- tclvalue(tkget(name1))
     if (temp != "") {
       assign(temp, ans, envir = .GlobalEnv)
@@ -2949,7 +2989,7 @@ tk.single.nest <- function(list_lang) {
       stop(list_lang$tkmb40)
     }
     y <- d[d$nest_id == x, ]
-    ans <- chronology(y, test = T)
+    ans <- chronology(y, test = TRUE)
     temp <- tclvalue(tkget(name1))
     if (temp != "") {
       assign(temp, ans, envir = .GlobalEnv)
@@ -2990,7 +3030,6 @@ tk.single.nest <- function(list_lang) {
   tkgrid(tklabel(tt, text = ""), columnspan = 2)
   tkgrid(boutonc, columnspan = 4)
   tkgrid(tklabel(tt, text = ""), columnspan = 2)
-  tclServiceMode(TRUE)
 }
 
 
@@ -2998,7 +3037,8 @@ tk.single.nest.test <- function(
   dates = c("2000-05-01", "2000-05-30"),
   list_lang
 ) {
-  tclServiceMode(FALSE)
+  old_mode <- tclServiceMode(FALSE)
+  on.exit(tclServiceMode(old_mode), add = TRUE)
 
   tt <- tktoplevel()
   tktitle(tt) <- list_lang$titlesntlabl
@@ -3277,7 +3317,6 @@ tk.single.nest.test <- function(
     columnspan = 2
   )
   tkgrid(bouton2, row = n + 3 - 1, column = 4, columnspan = 2)
-  tclServiceMode(TRUE)
 }
 
 
@@ -3287,6 +3326,17 @@ cat_brs <- function(n = 1) {
 
 
 # Shows an information message box.
+# Asks for one file with the Tk file dialog (file.choose() prompts in the
+# console on Unix). Returns the path with forward slashes, or NULL if cancelled.
+choose_file <- function(...) {
+  x <- tk_choose.files(multi = FALSE, ...)
+  if (length(x) == 0 || identical(x, "")) {
+    return(NULL)
+  }
+  gsub("\\\\", "/", x)
+}
+
+
 tk_info <- function(message) {
   tkmessageBox(title = "", message = message, icon = "info", type = "ok")
 }

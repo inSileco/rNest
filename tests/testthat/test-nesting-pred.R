@@ -1,5 +1,3 @@
-context("nesting.pred")
-
 pr <- get(data(predictions, package = "rNest", envir = environment()))
 groups <- list(a = c("COLO", "CAGO"), b = "YWAR")
 cal <- rNest:::nesting.pred(pr, c(429, 431), groups)

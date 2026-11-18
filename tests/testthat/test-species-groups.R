@@ -1,5 +1,3 @@
-context("species groups")
-
 groups <- rNest:::species_groups()
 bg <- get(data(birdgroupings, package = "rNest", envir = environment()))
 

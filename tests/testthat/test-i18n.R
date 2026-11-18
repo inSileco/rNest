@@ -1,5 +1,3 @@
-context("i18n")
-
 keys <- function(x, prefix = "") {
   if (!is.list(x) || is.null(names(x))) {
     return(prefix)

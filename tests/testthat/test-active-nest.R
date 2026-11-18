@@ -1,5 +1,3 @@
-context("active.nest")
-
 test_that("active.nest() gives the same dates as the precalculated data", {
   calc <- active.nest(nw, nparam = np, progress = FALSE)
   prec <- active.nest(nw, nparam = np, useprecalc = TRUE, progress = FALSE)

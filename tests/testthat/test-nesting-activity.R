@@ -1,5 +1,3 @@
-context("nesting.activity")
-
 an <- active.nest(nw, nparam = np, progress = FALSE)
 
 test_that("nesting.activity() gives the share of active nests per date", {
@@ -24,9 +22,12 @@ test_that("nesting.activity() can pool by year", {
 })
 
 test_that("nesting.calendar() draws a calendar", {
-  if (.Platform$OS.type != "windows") {
-    skip("nesting.calendar() opens a windows() device")
+  # draw on a null pdf device: no window, no file
+  old <- options(device = function(...) grDevices::pdf(NULL, ...))
+  on.exit(options(old))
+  n <- length(grDevices::dev.list())
+  expect_no_error(nesting.calendar(nesting.activity(an)))
+  while (length(grDevices::dev.list()) > n) {
+    grDevices::dev.off()
   }
-  nesting.calendar(nesting.activity(an))
-  expect_true(TRUE)
 })

@@ -1,5 +1,3 @@
-context("internal helpers")
-
 test_that("span() counts days, both ends included", {
   d <- as.Date(c("2000-05-01", "2000-05-10"))
   expect_equal(rNest:::span(d), 10)
